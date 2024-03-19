@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  Automaticly run through a dungeon
 // @author       Takeces
-// @match        https://www.pokeclicker.com/
+// @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
 
