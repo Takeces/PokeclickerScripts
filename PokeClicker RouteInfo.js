@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker RouteInfo
 // @namespace    pcInfoStuff
-// @version      0.1
+// @version      0.2
 // @description  Show current route infos
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -37,28 +37,35 @@
         if(player === undefined) { return; }
 
         let route = Routes.getRoute(player.region, player.route());
-        if(route === undefined) { return; }
-        let pokes = route.pokemon.land.concat(route.pokemon.water);
-        for(let i = 0; i < pokes.length; i++) {
-            let pokeDiv = document.createElement('div');
+        if(route !== undefined) {
+            let pokes = route.pokemon.land.concat(route.pokemon.water);
+            for(let i = 0; i < pokes.length; i++) {
+                let pokeDiv = document.createElement('div');
 
-            let pokeCaughtImg = document.createElement('img');
-            pokeCaughtImg.setAttribute('src', getPokeballImage(pokes[i]));
-            pokeCaughtImg.setAttribute('style', 'width: 0.75em;');
-            pokeDiv.appendChild(pokeCaughtImg);
+                let pokeCaughtImg = document.createElement('img');
+                pokeCaughtImg.setAttribute('src', getPokeballImage(pokes[i]));
+                pokeCaughtImg.setAttribute('style', 'width: 0.75em;');
+                pokeDiv.appendChild(pokeCaughtImg);
 
 
-            let pokeImg = document.createElement('img');
-            pokeImg.setAttribute('class', 'smallImage');
-            pokeImg.setAttribute('src', getPokeImage(pokes[i]));
-            pokeDiv.appendChild(pokeImg);
+                let pokeImg = document.createElement('img');
+                pokeImg.setAttribute('class', 'smallImage');
+                pokeImg.setAttribute('src', getPokeImage(pokes[i]));
+                pokeDiv.appendChild(pokeImg);
 
-            let pokeSpan = document.createElement('span');
-            pokeSpan.innerHTML = pokes[i];
-            pokeDiv.appendChild(pokeSpan);
+                let pokeSpan = document.createElement('span');
+                pokeSpan.innerHTML = pokes[i];
+                pokeDiv.appendChild(pokeSpan);
 
-            container.appendChild(pokeDiv);
+                container.appendChild(pokeDiv);
+            }
         }
+
+        let mysDisplayDiv = document.createElement('div');
+        let text = document.createElement('span');
+        text.innerHTML = '<img style="height: 20px;" src="assets/images/breeding/Mystery_egg.png" />:&nbsp;<img style="height: 20px;" src="assets/images/pokeball/Pokeball-shiny.svg" />' + checkEggsRemaining(GameConstants.EggItemType.Mystery_egg, true) + '&nbsp;|&nbsp;<img style="height: 20px;" src="assets/images/pokeball/Pokeball.svg" />' + checkEggsRemaining(GameConstants.EggItemType.Mystery_egg, false);
+        mysDisplayDiv.appendChild(text);
+        container.appendChild(mysDisplayDiv);
     }
 
     function getPokeballImage(pokeName) {
@@ -76,6 +83,29 @@
 
     function getPokeImage(pokeName) {
         return PokemonHelper.getImage(PokemonHelper.getPokemonByName(pokeName).id);
+    }
+
+    function checkEggsRemaining(type = GameConstants.EggItemType.Mystery_egg, shiny = true) {
+        let possiblePokes = [];
+        if(type !== GameConstants.EggItemType.Mystery_egg) {
+            possiblePokes = App.game.breeding.hatchList[type][player.region];
+        } else {
+            possiblePokes = App.game.breeding.hatchList[0][player.region].concat(
+                App.game.breeding.hatchList[1][player.region],
+                App.game.breeding.hatchList[2][player.region],
+                App.game.breeding.hatchList[3][player.region],
+                App.game.breeding.hatchList[4][player.region],
+                App.game.breeding.hatchList[5][player.region],
+                App.game.breeding.hatchList[7][player.region]
+            );
+        }
+        let result = 0;
+        for(let i = 0; i < possiblePokes.length; i++) {
+            if(!App.game.party.alreadyCaughtPokemonByName(possiblePokes[i], shiny)) {
+                result++;
+            }
+        }
+        return result;
     }
 
 	/** Basic initialization call */
