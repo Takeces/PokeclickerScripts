@@ -132,6 +132,7 @@
             if(checkHatched(egg.pokemon)) {
                 return true;
             }
+			return;
         }
     }
 
