@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker SoftReset Breeding Eggs
 // @namespace    pcInfoStuff
-// @version      0.1
+// @version      0.2
 // @description  Soft reset for breeding eggs
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -12,14 +12,7 @@
     'use strict';
 
     function init() {
-        let btn = document.createElement('button');
-        btn.setAttribute('id', 'pSoftResetToggle');
-        btn.setAttribute('style', 'position: fixed; top: 0.5em; right: 17em;');
-        btn.innerHTML = 'Toggle Saving';
-        btn.addEventListener('click', toggleSaving);
-        document.getElementsByTagName('body')[0].appendChild(btn);
-
-       //Game.prototype.save = function() {};
+        Game.prototype.save = function() {};
         checkAndLoadSave();
     }
 
@@ -48,10 +41,8 @@
     }
 
     function doSoftResetStuff() {
-        toggleSaving();
         autoMysteryEgg();
     }
-
 
     function autoMysteryEgg() {
         if(doMysteryEgg()) {
@@ -68,7 +59,7 @@
 
         for(let i = 0; i < 4; i++) {
             // don't try to add more eggs to the hatchery then there are pokes left for it
-            if(checkEggsRemaining().length <= i + 1) { break; }
+            if(checkEggsRemaining().length < i + 1) { break; }
             if(App.game.breeding.eggList[i]().type < 0 && player.itemList.Mystery_egg() > 0) {
                 ItemList.Mystery_egg.use();
                 if (App.game.party.alreadyCaughtPokemonByName(App.game.breeding.eggList[i]().pokemon, true)) {
@@ -132,7 +123,7 @@
             if(checkHatched(egg.pokemon)) {
                 return true;
             }
-			return;
+            return;
         }
     }
 
@@ -156,28 +147,7 @@
     }
 
     function doReload() {
-        App = undefined;
-        player = undefined;
         location.reload();
-    }
-
-    var savingActive = true;
-    function toggleSaving() {
-        if(savingActive) {
-            Game.prototype.save = function() {};
-            App.game.save = function() {};
-            savingActive = false;
-            document.getElementById('pSoftResetToggle').style.backgroundColor = '';
-        } else {
-            App.game.save = function() {
-                Save.store(player);
-            }
-            Game.prototype.save = function() {
-                Save.store(player);
-            };
-            savingActive = true;
-            document.getElementById('pSoftResetToggle').style.backgroundColor = 'green';
-        }
     }
 
 	/** Basic initialization call */
