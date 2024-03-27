@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker SoftReset DungeonRunner
 // @namespace    pcInfoStuff
-// @version      0.1
+// @version      0.2
 // @description  Soft reset for running dungeons
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -45,13 +45,16 @@
         let PcAutomationHolder = window.PcAutomationHolder;
         if(!PcAutomationHolder) {
             console.log('AutomationParent has to be active!');
+            setTimeout(doSoftResetStuff, 250);
             return;
         }
         if(!PcAutomationHolder.dungeonRunner || !PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon || !PcAutomationHolder.dungeonRunner.toggleAutoDungeon) {
             console.log('DungeonRunner and AutoStartDungeon have to be active!');
+            setTimeout(doSoftResetStuff, 250);
             return;
         }
         if(DungeonRunner.dungeonCompleted(player.town().dungeon, true)) {
+            console.log('Dungeon is complete!');
             return;
         }
         PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon();
@@ -82,6 +85,14 @@
                 setTimeout(checkCaught, 2000);
             };
         })();
+
+        (function() {
+            ogFuncs.startBossFight = DungeonRunner.startBossFight; // <-- Reference
+            DungeonRunner.startBossFight = function() {
+                ogFuncs.startBossFight.apply(this);
+                setTimeout(checkShinyBoss, 2000);
+            };
+        })();
     }
 
     function checkCaught() {
@@ -89,6 +100,12 @@
             doReload();
         }
         caughtPokemon = false;
+    }
+
+    function checkShinyBoss() {
+        if(!DungeonBattle.enemyPokemon().shiny && !caughtPokemon) {
+            doReload();
+        }
     }
 
     function saveGame() {
