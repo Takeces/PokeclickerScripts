@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Dungeon Runner
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Automaticly run through a dungeon
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -28,6 +28,11 @@
         btn.addEventListener('click', toggleAutoDungeon);
 
         PcAutomationHolder.addAutomationButton(btn);
+
+        if(!PcAutomationHolder.dungeonRunner) {
+            PcAutomationHolder.dungeonRunner = {};
+        }
+        PcAutomationHolder.dungeonRunner.toggleAutoDungeon = toggleAutoDungeon;
     }
 
 	var autoDungeonEnabled = false;
