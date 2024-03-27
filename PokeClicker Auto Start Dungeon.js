@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Start Dungeon
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Auto start dungeons
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -48,6 +48,11 @@
         PcAutomationHolder.addAutomationButton(btnCaught, true);
         PcAutomationHolder.addAutomationButton(btnCaughtShiny, true);
         PcAutomationHolder.addAutomationButton(btnAchievement, true);
+
+        if(!PcAutomationHolder.dungeonRunner) {
+            PcAutomationHolder.dungeonRunner = {};
+        }
+        PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon = toggleAutoStartDungeon;
     }
 
     var autoStartDungeonEnabled = false;
