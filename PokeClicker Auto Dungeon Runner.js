@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Dungeon Runner
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Automaticly run through a dungeon
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -97,7 +97,16 @@
 		let xMax = board[0].length;
 		let yMax = board.length;
 
-		for(let x = 0; x < xMax; x++) {
+        let xStart = 0;
+        let xIncrement = 1;
+
+        // flash movement
+        if(!visitAllTiles && App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(DungeonRunner.dungeon.name)]() >= 100) {
+            xStart = 1;
+            xIncrement = 2;
+        }
+
+		for(let x = xStart; x < xMax; x = x + xIncrement) {
 			for(let y = 0; y < yMax; y++) {
 				let visited = getTile(x, y).isVisited;
 				let hasAccess = DungeonRunner.map.hasAccessToTile(getPoint(x, y));
