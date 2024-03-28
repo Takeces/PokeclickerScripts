@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         PokeClicker Auto Dungeon Runner
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Automaticly run through a dungeon
 // @author       Takeces
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Dungeon%20Runner.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Dungeon%20Runner.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
