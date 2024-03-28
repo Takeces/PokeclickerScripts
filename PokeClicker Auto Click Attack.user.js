@@ -4,8 +4,8 @@
 // @version      0.2
 // @description  Auto click attack
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Click%20Attack.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Click%20Attack.js
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Click%20Attack.user.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Click%20Attack.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
