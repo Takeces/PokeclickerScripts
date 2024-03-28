@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker RouteInfo
 // @namespace    pcInfoStuff
-// @version      0.3
+// @version      0.4
 // @description  Show current route infos
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -40,20 +40,10 @@
 
         let route = Routes.getRoute(player.region, player.route());
         if(route !== undefined) {
-            //pokes = route.pokemon.land.concat(route.pokemon.water);
             pokes = RouteHelper.getAvailablePokemonList(player.route(), player.region);
         } else if(player.town() instanceof DungeonTown) {
             let dungeon = player.town().dungeon;
-            for(let i = 0; i < dungeon.availableMinions().length; i++) {
-                if(dungeon.availableMinions()[i].pokemon) {
-                    pokes.push(dungeon.availableMinions()[i].pokemon);
-                }
-            }
-            for(let i = 0; i < dungeon.availableBosses().length; i++) {
-                if(dungeon.availableBosses()[i] instanceof DungeonBossPokemon) {
-                    pokes.push(dungeon.availableBosses()[i].name);
-                }
-            }
+            pokes = dungeon.allAvailablePokemon();
         }
 
         if(pokes.length > 0) {
