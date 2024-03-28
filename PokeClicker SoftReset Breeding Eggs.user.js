@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         PokeClicker SoftReset Breeding Eggs
 // @namespace    pcInfoStuff
-// @version      0.2
+// @version      0.3
 // @description  Soft reset for breeding eggs
 // @author       Takeces
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20Breeding%20Eggs.user.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20Breeding%20Eggs.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
