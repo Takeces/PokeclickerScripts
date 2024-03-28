@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         PokeClicker SoftReset Buy Shop Pokemon
 // @namespace    pcInfoStuff
-// @version      0.1
+// @version      0.2
 // @description  Soft reset for buying shop pokemon
 // @author       Takeces
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20Buy%20Shop%20Pokemon.user.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20Buy%20Shop%20Pokemon.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
