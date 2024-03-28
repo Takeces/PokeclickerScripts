@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         PokeClicker SoftReset DungeonRunner
 // @namespace    pcInfoStuff
-// @version      0.2
+// @version      0.3
 // @description  Soft reset for running dungeons
 // @author       Takeces
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20DungeonRunner.user.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20DungeonRunner.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
