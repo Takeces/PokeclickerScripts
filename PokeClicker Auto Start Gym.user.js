@@ -1,9 +1,12 @@
 // ==UserScript==
 // @name         PokeClicker Auto Start Gym
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Auto start gyms
 // @author       Takeces
+
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Start%20Gym.user.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Start%20Gym.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
