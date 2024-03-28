@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.5
+// @version      0.6
 // @description  Show phasing info
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
@@ -105,6 +105,7 @@
                 ogFunc4.apply(this, [enemyPokemon, route, region]);
                 if(currentPhase !== null) {
                     currentPhase.result = 'Catched';
+					currentPhase.numberOfShinies = countShinies();
                 }
             };
         })();
