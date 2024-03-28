@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.4
+// @version      0.5
 // @description  Show phasing info
 // @author       Takeces
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
