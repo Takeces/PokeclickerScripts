@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         PokeClicker Auto Parent
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Parent with Container for all the auto stuff
 // @author       Takeces
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Parent.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Parent.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
