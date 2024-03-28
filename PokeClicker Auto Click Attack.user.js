@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         PokeClicker Auto Click Attack
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Auto click attack
 // @author       Takeces
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Click%20Attack.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Click%20Attack.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
