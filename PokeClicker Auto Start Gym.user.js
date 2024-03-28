@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Start Gym
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Auto start gyms
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Start%20Gym.user.js
@@ -29,7 +29,7 @@
         btn.innerHTML = 'Auto Gym';
         btn.addEventListener('click', toggleAuto);
 
-        PcAutomationHolder.addAutomationButton(btn, true);
+        PcAutomationHolder.addAutomationButton(btn);
     }
 
 	function startGym() {
