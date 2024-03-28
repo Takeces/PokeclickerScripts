@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         PokeClicker Log
 // @namespace    pcInfoStuff
-// @version      0.1
+// @version      0.2
 // @description  Show last log entries
 // @author       Takeces
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Log.user.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Log.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
