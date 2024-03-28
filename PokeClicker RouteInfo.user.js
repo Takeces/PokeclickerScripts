@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker RouteInfo
 // @namespace    pcInfoStuff
-// @version      0.4
+// @version      0.5
 // @description  Show current route infos
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20RouteInfo.user.js
