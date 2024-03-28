@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.6
+// @version      0.7
 // @description  Show phasing info
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
@@ -256,6 +256,7 @@
     }
 
     function increasePhase() {
+	    getFromLocalStorage();
         getCurrentPhase().count++;
         storeToLocalStorage();
     }
