@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.7
+// @version      0.8
 // @description  Show phasing info
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
@@ -53,10 +53,11 @@
     function initPhasing() {
         initBattleHooks();
         initDungeonHooks();
+        initTemporaryBattleHooks();
     }
 
+    var currentPhase = null;
     function initBattleHooks() {
-        var currentPhase = null;
 
         (function() {
             var ogFunc =  Battle.generateNewEnemy; // <-- Reference
@@ -84,16 +85,16 @@
                 currentPhase.encounterType = enemy.encounterType;
                 currentPhase.numberOfShinies = countShinies();
                 currentPhase.result = 'No Attempt';
-
                 storeToLocalStorage();
             };
         })();
 
         (function() {
-            var ogFunc3 =  Battle.attemptCatch;
+            var ogFunc3 = Battle.attemptCatch;
             Battle.attemptCatch = function(enemyPokemon, route, region) {
                 if(currentPhase !== null) {
                     currentPhase.result = 'Escaped';
+                    storeToLocalStorage();
                 }
                 ogFunc3.apply(this, [enemyPokemon, route, region]);
             };
@@ -106,13 +107,13 @@
                 if(currentPhase !== null) {
                     currentPhase.result = 'Catched';
 					currentPhase.numberOfShinies = countShinies();
+                    storeToLocalStorage();
                 }
             };
         })();
     }
 
     function initDungeonHooks() {
-        var currentPhase = null;
 
         (function() {
             var ogFunc =  DungeonBattle.generateNewEnemy; // <-- Reference
@@ -140,16 +141,16 @@
                 currentPhase.encounterType = enemy.encounterType;
                 currentPhase.numberOfShinies = countShinies();
                 currentPhase.result = 'No Attempt';
-
                 storeToLocalStorage();
             };
         })();
 
         (function() {
-            var ogFunc3 =  DungeonBattle.attemptCatch;
+            var ogFunc3 = DungeonBattle.attemptCatch;
             DungeonBattle.attemptCatch = function(enemyPokemon, route, region) {
                 if(currentPhase !== null) {
                     currentPhase.result = 'Escaped';
+                    storeToLocalStorage();
                 }
                 ogFunc3.apply(this, [enemyPokemon, route, region]);
             };
@@ -161,6 +162,64 @@
                 ogFunc4.apply(this, [enemyPokemon, route, region]);
                 if(currentPhase !== null) {
                     currentPhase.result = 'Catched';
+					currentPhase.numberOfShinies = countShinies();
+                    storeToLocalStorage();
+                }
+            };
+        })();
+    }
+
+    function initTemporaryBattleHooks() {
+
+        (function() {
+            var ogFunc =  TemporaryBattleBattle.generateNewEnemy; // <-- Reference
+            TemporaryBattleBattle.generateNewEnemy = function() {
+                ogFunc.apply(this);
+                increasePhase();
+            };
+        })();
+
+        (function() {
+            var ogFunc2 = TemporaryBattleBattle.defeatPokemon; // <-- Reference
+            TemporaryBattleBattle.defeatPokemon = function() {
+                const enemy = TemporaryBattleBattle.enemyPokemon();
+                if(enemy.shiny) {
+                    currentPhase = getCurrentPhase();
+                    addNewPhase();
+                }
+
+                ogFunc2.apply(this);
+
+                if(!enemy.shiny) { return; }
+
+                currentPhase.pokemon = enemy.name;
+                currentPhase.location = TemporaryBattleBattle.battle.name;
+                currentPhase.encounterType = enemy.encounterType;
+                currentPhase.numberOfShinies = countShinies();
+                currentPhase.result = 'No Attempt';
+                storeToLocalStorage();
+            };
+        })();
+
+        (function() {
+            var ogFunc3 = TemporaryBattleBattle.attemptCatch;
+            TemporaryBattleBattle.attemptCatch = function(enemyPokemon, route, region) {
+                if(currentPhase !== null) {
+                    currentPhase.result = 'Escaped';
+                    storeToLocalStorage();
+                }
+                ogFunc3.apply(this, [enemyPokemon, route, region]);
+            };
+        })();
+
+        (function() {
+            var ogFunc4 = TemporaryBattleBattle.catchPokemon;
+            TemporaryBattleBattle.catchPokemon = function(enemyPokemon, route, region) {
+                ogFunc4.apply(this, [enemyPokemon, route, region]);
+                if(currentPhase !== null) {
+                    currentPhase.result = 'Catched';
+					currentPhase.numberOfShinies = countShinies();
+                    storeToLocalStorage();
                 }
             };
         })();
@@ -183,9 +242,6 @@
     }
 
     var phasing = [getNewPhase()];
-
-	function initContainer() {
-	}
 
     function addNewPhase() {
         phasing.push(getNewPhase());
@@ -281,6 +337,9 @@
         }
 
         // Dungeon
+		if(player.town() instanceof DungeonTown) {
+			return player.town().name;
+		}
     }
 
 	/** Basic initialization call */
