@@ -4,8 +4,8 @@
 // @version      0.2
 // @description  Auto route switch to get shinies faster
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Route%20Switch%20(Shiny).js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Route%20Switch%20(Shiny).js
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Route%20Switch%20(Shiny).user.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Route%20Switch%20(Shiny).user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
