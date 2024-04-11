@@ -5,6 +5,8 @@
 // @description  open more windows
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
+// @updateURL	 https://raw.githubusercontent.com/Takeces/PokeclickerScripts/main/PokeClicker%20Open%20More%20Instances.js
+// @downloadURL	 https://raw.githubusercontent.com/Takeces/PokeclickerScripts/main/PokeClicker%20Open%20More%20Instances.js
 // @grant        none
 // ==/UserScript==
 
