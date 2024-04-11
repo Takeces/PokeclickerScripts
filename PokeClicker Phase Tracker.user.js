@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.8
+// @version      0.9
 // @description  Show phasing info
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
@@ -13,7 +13,14 @@
 (function() {
     'use strict';
 
+    const BUTTON_ID = 'pcStopFlashing';
     function init() {
+        let PcAutomationHolder = window.PcAutomationHolder;
+        if(PcAutomationHolder === undefined || PcAutomationHolder === null) {
+            setTimeout(init, 50);
+            return;
+        }
+
         let container = document.createElement('div');
         container.setAttribute('id', 'pcPhasingContainer');
         container.setAttribute('style', 'position: fixed; bottom: 1em; right: 1em; padding-left: 0.5em; padding-right: 1em;');
@@ -48,6 +55,13 @@
 
         // start the info update process
         setInterval(fillContainer, 2000);
+
+        var btnStop = document.createElement('button');
+        btnStop.setAttribute('id', BUTTON_ID);
+        btnStop.innerHTML = 'Stop Flashing';
+        btnStop.addEventListener('click', stopFlashBackground);
+
+        PcAutomationHolder.addAutomationButton(btnStop);
     }
 
     function initPhasing() {
@@ -108,6 +122,7 @@
                     currentPhase.result = 'Catched';
 					currentPhase.numberOfShinies = countShinies();
                     storeToLocalStorage();
+                    startFlashBackground();
                 }
             };
         })();
@@ -164,6 +179,7 @@
                     currentPhase.result = 'Catched';
 					currentPhase.numberOfShinies = countShinies();
                     storeToLocalStorage();
+                    startFlashBackground();
                 }
             };
         })();
@@ -340,6 +356,32 @@
 		if(player.town() instanceof DungeonTown) {
 			return player.town().name;
 		}
+    }
+
+    var flashInterval = null;
+    var flashTimeout = 500;
+    function startFlashBackground() {
+        if(flashInterval !== null) {
+            return;
+        }
+        flashInterval = setInterval(flashBackground, flashTimeout);
+    }
+
+    function stopFlashBackground() {
+        clearInterval(flashInterval);
+        flashInterval = null;
+        document.querySelector('body').style.background = '';
+    }
+
+    var flashState = false;
+    function flashBackground() {
+        if(flashState) {
+            flashState = false;
+            document.querySelector('body').style.background = '';
+            return;
+        }
+        flashState = true;
+        document.querySelector('body').style.background = 'red';
     }
 
 	/** Basic initialization call */
