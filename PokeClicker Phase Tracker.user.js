@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.9
+// @version      0.10
 // @description  Show phasing info
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
@@ -70,7 +70,6 @@
         initTemporaryBattleHooks();
     }
 
-    var currentPhase = null;
     function initBattleHooks() {
 
         (function() {
@@ -85,8 +84,10 @@
             var ogFunc2 = Battle.defeatPokemon; // <-- Reference
             Battle.defeatPokemon = function() {
                 const enemy = Battle.enemyPokemon();
+                resetPhaseToEdit();
                 if(enemy.shiny) {
-                    currentPhase = getCurrentPhase();
+                    identifyPhaseToEditIndex();
+                    var currentPhase = getCurrentPhase();
                     addNewPhase();
                 }
 
@@ -106,6 +107,7 @@
         (function() {
             var ogFunc3 = Battle.attemptCatch;
             Battle.attemptCatch = function(enemyPokemon, route, region) {
+                var currentPhase = getCurrentPhase();
                 if(currentPhase !== null) {
                     currentPhase.result = 'Escaped';
                     storeToLocalStorage();
@@ -118,6 +120,7 @@
             var ogFunc4 = Battle.catchPokemon;
             Battle.catchPokemon = function(enemyPokemon, route, region) {
                 ogFunc4.apply(this, [enemyPokemon, route, region]);
+                var currentPhase = getCurrentPhase();
                 if(currentPhase !== null) {
                     currentPhase.result = 'Catched';
 					currentPhase.numberOfShinies = countShinies();
@@ -142,8 +145,10 @@
             var ogFunc2 = DungeonBattle.defeatPokemon; // <-- Reference
             DungeonBattle.defeatPokemon = function() {
                 const enemy = DungeonBattle.enemyPokemon();
+                resetPhaseToEdit();
                 if(enemy.shiny) {
-                    currentPhase = getCurrentPhase();
+                    identifyPhaseToEditIndex();
+                    var currentPhase = getCurrentPhase();
                     addNewPhase();
                 }
 
@@ -163,6 +168,7 @@
         (function() {
             var ogFunc3 = DungeonBattle.attemptCatch;
             DungeonBattle.attemptCatch = function(enemyPokemon, route, region) {
+                var currentPhase = getCurrentPhase();
                 if(currentPhase !== null) {
                     currentPhase.result = 'Escaped';
                     storeToLocalStorage();
@@ -175,6 +181,7 @@
             var ogFunc4 = DungeonBattle.catchPokemon;
             DungeonBattle.catchPokemon = function(enemyPokemon, route, region) {
                 ogFunc4.apply(this, [enemyPokemon, route, region]);
+                var currentPhase = getCurrentPhase();
                 if(currentPhase !== null) {
                     currentPhase.result = 'Catched';
 					currentPhase.numberOfShinies = countShinies();
@@ -199,8 +206,10 @@
             var ogFunc2 = TemporaryBattleBattle.defeatPokemon; // <-- Reference
             TemporaryBattleBattle.defeatPokemon = function() {
                 const enemy = TemporaryBattleBattle.enemyPokemon();
+                resetPhaseToEdit();
                 if(enemy.shiny) {
-                    currentPhase = getCurrentPhase();
+                    identifyPhaseToEditIndex();
+                    var currentPhase = getCurrentPhase();
                     addNewPhase();
                 }
 
@@ -220,6 +229,7 @@
         (function() {
             var ogFunc3 = TemporaryBattleBattle.attemptCatch;
             TemporaryBattleBattle.attemptCatch = function(enemyPokemon, route, region) {
+                var currentPhase = getCurrentPhase();
                 if(currentPhase !== null) {
                     currentPhase.result = 'Escaped';
                     storeToLocalStorage();
@@ -232,6 +242,7 @@
             var ogFunc4 = TemporaryBattleBattle.catchPokemon;
             TemporaryBattleBattle.catchPokemon = function(enemyPokemon, route, region) {
                 ogFunc4.apply(this, [enemyPokemon, route, region]);
+                var currentPhase = getCurrentPhase();
                 if(currentPhase !== null) {
                     currentPhase.result = 'Catched';
 					currentPhase.numberOfShinies = countShinies();
@@ -318,6 +329,9 @@
     }
 
     function storeToLocalStorage() {
+        if(phaseToEditIndex !== null) {
+            phasing[phaseToEditIndex] = phaseToEdit;
+        }
         localStorage.setItem('pcPhasing', JSON.stringify(phasing));
     }
 
@@ -329,12 +343,23 @@
 
     function increasePhase() {
 	    getFromLocalStorage();
-        getCurrentPhase().count++;
+        phasing[phasing.length - 1].count++;
         storeToLocalStorage();
     }
 
+    var phaseToEditIndex = null;
+    var phaseToEdit = null;
+    function identifyPhaseToEditIndex() {
+        phaseToEditIndex = phasing.length - 1;
+        phaseToEdit = phasing[phaseToEditIndex];
+    }
+    function resetPhaseToEdit() {
+        phaseToEditIndex = null;
+        phaseToEdit = null;
+    }
+
     function getCurrentPhase() {
-        return phasing.slice(-1)[0];
+        return phaseToEdit;
     }
 
     function countShinies() {
