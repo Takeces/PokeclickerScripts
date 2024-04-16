@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Farm Unlocks
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Auto unlock berries in farm
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Farm%20Unlocks.user.js
@@ -26,7 +26,7 @@
 
         var btn = document.createElement('button');
         btn.setAttribute('id', BUTTON_ID);
-        btn.innerHTML = 'Auto Farm Unlocks';
+        btn.innerHTML = 'Auto Berry Unlocks';
         btn.addEventListener('click', toggleAuto);
 
         PcAutomationHolder.addAutomationButton(btn);
@@ -70,6 +70,16 @@
         return true;
     }
 
+    function getPlotsNeeded(layout) {
+        let plots = [];
+        for(const berryName in layout) {
+            for(const plot of layout[berryName]) {
+                plots.push(plot);
+            }
+        }
+        return plots;
+    }
+
     function checkPlotsEmpty(plots) {
         for(const plot of plots) {
             if(!App.game.farming.plotList[plot].isEmpty()) { return false; }
@@ -98,13 +108,23 @@
 
         let longestRipeTimes = getSortedLongestRipeTime(layout);
 
+        let plotsNeeded = getPlotsNeeded(layout);
+        for(const plot of App.game.farming.plotList.keys()) {
+            if(plotsNeeded.includes(plot)) { continue; }
+            if(App.game.farming.plotList[plot].berry !== -1 && App.game.farming.plotList[plot].age > App.game.farming.plotList[plot].berryData.growthTime[3]) {
+                App.game.farming.harvest(plot);
+            }
+        }
+
         let lastBerry = null;
         for(const berryIndex of berriesForUnlock) {
             // if targeted plots for a berry are NOT empty try to harvest if old enough
             if(!checkPlotsEmpty(layout[BerryType[berryIndex]])) {
                 for(const plot of layout[BerryType[berryIndex]]) {
-                    if(App.game.farming.plotList[plot].age >= App.game.farming.plotList[plot].berryData.growthTime[4] - 2) {
-                        App.game.farming.harvest(plot);
+                    if(App.game.farming.plotList[plot].age >= App.game.farming.plotList[plot].berryData.growthTime[4] - 1) {
+                        //App.game.farming.harvest(plot);
+                        App.game.farming.harvestAll();
+                        return;
                     }
                 }
             }
