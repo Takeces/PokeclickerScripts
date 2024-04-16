@@ -56,6 +56,7 @@
 	}
 
     var lastDir = 'right';
+	var fleeTries = 0;
 	function doSafari() {
         if(!Safari.inProgress()) {
             return;
@@ -66,17 +67,21 @@
             return;
         }
 
+        if(SafariBattle.busy()) {
+            if(fleeTries > 80) {
+				SafariBattle.endBattle();
+			}
+            return;
+        }
+
         if(!Safari.inBattle()) {
+			fleeTries = 0;
             if(!lastDir || lastDir == 'left') {
                 lastDir = 'right';
             } else {
                 lastDir = 'left';
             }
             Safari.step(lastDir);
-            return;
-        }
-
-        if(SafariBattle.busy()) {
             return;
         }
 
@@ -87,6 +92,7 @@
         }
 
         SafariBattle.run();
+		fleeTries++;
 	}
 
 	/** Basic initialization call */
