@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Parent
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.4
 // @description  Parent with Container for all the auto stuff
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Parent.user.js
@@ -18,7 +18,7 @@
     function init() {
         let container = document.createElement('div');
         container.setAttribute('id', PARENT_CONTAINER_ID);
-        container.setAttribute('style', 'position: fixed; top: 3em; right: 0.5em;');
+        container.setAttribute('style', 'position: fixed; top: 3em; right: 0.5em;z-index:1100;');
         container.setAttribute('class', 'card border-secondary');
 
         let header = document.createElement('div');
