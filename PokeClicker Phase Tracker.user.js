@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.10
+// @version      0.11
 // @description  Show phasing info
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
@@ -68,6 +68,7 @@
         initBattleHooks();
         initDungeonHooks();
         initTemporaryBattleHooks();
+        initSafariBattleHooks();
     }
 
     function initBattleHooks() {
@@ -247,6 +248,55 @@
                     currentPhase.result = 'Catched';
 					currentPhase.numberOfShinies = countShinies();
                     storeToLocalStorage();
+                    startFlashBackground();
+                }
+            };
+        })();
+    }
+
+    function initSafariBattleHooks() {
+
+        (function() {
+            var ogFunc =  SafariBattle.load; // <-- Reference
+            SafariBattle.load = function(enemy = SafariPokemon.random(Safari.activeEnvironment())) {
+                ogFunc.apply(this, [enemy]);
+                increasePhase();
+                if(SafariBattle.enemy.shiny) {
+                    identifyPhaseToEditIndex();
+                    var currentPhase = getCurrentPhase();
+                    addNewPhase();
+                    currentPhase.pokemon = SafariBattle.enemy.name;
+                    currentPhase.location = SafariBattle.name;
+                    currentPhase.encounterType = 'Safari';
+                    currentPhase.numberOfShinies = countShinies();
+                    currentPhase.result = 'No Attempt';
+                    storeToLocalStorage();
+                }
+            };
+        })();
+
+        (function() {
+            var ogFunc3 = SafariBattle.throwBall;
+            SafariBattle.throwBall = function() {
+                var currentPhase = getCurrentPhase();
+                if(currentPhase !== null) {
+                    currentPhase.result = 'Escaped';
+                    storeToLocalStorage();
+                }
+                ogFunc3.apply(this);
+            };
+        })();
+
+        (function() {
+            var ogFunc4 = SafariBattle.capturePokemon;
+            SafariBattle.capturePokemon = function() {
+                ogFunc4.apply(this);
+                var currentPhase = getCurrentPhase();
+                if(currentPhase !== null) {
+                    currentPhase.result = 'Catched';
+					currentPhase.numberOfShinies = countShinies();
+                    storeToLocalStorage();
+                    startFlashBackground();
                 }
             };
         })();
