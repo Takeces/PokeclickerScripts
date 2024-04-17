@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Safari Shiny V2
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Auto Safari shiny catching
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Safari%20Shiny%20V2.user.js
@@ -138,9 +138,9 @@
             if (Safari.inBattle()) {
                 if (!SafariBattle.busy()) {
                     if (SafariBattle.enemy.shiny && !App.game.party.alreadyCaughtPokemon(SafariBattle.enemy.id, true)) {
-                        if (SafariBattle.enemy.eatingBait != 2 && App.game.farming.berryList[11]() > 25) {
+                        if (SafariBattle.enemy.eating < 1 && App.game.farming.berryList[11]() > 25) {
                             SafariBattle.throwBait(2);
-                        } else if (Safari.balls() > 0) { //prevent balls to be negativ and lock the safari
+                        } else if (Safari.balls() > 0) { //prevent balls to be negative and lock the safari
                             SafariBattle.throwBall();
                         }
                     } else {
