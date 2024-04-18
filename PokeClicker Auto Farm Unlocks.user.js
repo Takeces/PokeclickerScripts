@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Farm Unlocks
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      0.6
 // @description  Auto unlock berries in farm
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Farm%20Unlocks.user.js
@@ -111,10 +111,6 @@
         let plotsNeeded = getPlotsNeeded(layout);
         for(const plot of App.game.farming.plotList.keys()) {
             if(plotsNeeded.includes(plot)) { continue; }
-			if(App.game.farming.plotList[plot].berry !== -1 && App.game.farming.plotList[plot].berry !== targetBerryIndex) {
-                App.game.farming.plotList[plot].die(true);
-            }
-			continue;
             if(App.game.farming.plotList[plot].berry !== -1 && App.game.farming.plotList[plot].age > App.game.farming.plotList[plot].berryData.growthTime[3]) {
                 App.game.farming.harvest(plot);
             }
