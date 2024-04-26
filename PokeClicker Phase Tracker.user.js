@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.11
+// @version      0.12
 // @description  Show phasing info
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
@@ -328,13 +328,14 @@
     function fillContainer() {
         let body = document.getElementById('pcPhasingBody');
         body.innerHTML = '';
+        body.style.height = '15em';
         let table = document.createElement('table');
         table.setAttribute('class', 'table table-sm m-0');
         for(let i = phasing.length - 1; i >= 0; i--) {
             let elem = document.createElement('tr');
 
             let tdSince = document.createElement('td');
-            tdSince.innerHTML = 'Since '+(new Date(phasing[i].date)).toLocaleString();
+            tdSince.innerHTML = (new Date(phasing[i].date)).toLocaleString();
             elem.appendChild(tdSince);
 
             let tdShinies = document.createElement('td');
@@ -364,6 +365,7 @@
             let deleteBtn = document.createElement('button');
             deleteBtn.addEventListener('click', function() {deletePhase(i);});
             deleteBtn.setAttribute('class', 'btn btn-danger');
+            deleteBtn.setAttribute('style', 'padding: 4px;');
             deleteBtn.innerHTML = 'x';
             elem.appendChild(deleteBtn);
 
