@@ -198,6 +198,9 @@
                     Safari.step(next[0].dir);
                 }
             }
+        } else {
+            toggleAuto();
+            setTimeout(startSafari, 2000);
         }
 	}
 
