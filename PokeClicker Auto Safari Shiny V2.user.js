@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Safari Shiny V2
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Auto Safari shiny catching
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Safari%20Shiny%20V2.user.js
@@ -154,15 +154,28 @@
                 let dest = {d: Infinity};
                 movementMatrix(Safari.playerXY);
 
-                const pkm = Safari.pokemonGrid();
-                for (let i = 0; i < pkm.length; i++) {
-                    const dist = matrix[pkm[i].y][pkm[i].x];
+                const itm = Safari.itemGrid();
+                for (let i = 0; i < itm.length; i++) {
+                    const dist = matrix[itm[i].y][itm[i].x];
                     if (
-                        pkm[i].shiny && !App.game.party.alreadyCaughtPokemon(pkm[i].id, true) &&
-                        dist < dest.d && dist < pkm[i].steps
+                        dist < dest.d
                     ) {
-                        dest = pkm[i];
+                        dest = itm[i];
                         dest.d = dist;
+                    }
+                }
+
+                if(itm.length < 1) {
+                    const pkm = Safari.pokemonGrid();
+                    for (let i = 0; i < pkm.length; i++) {
+                        const dist = matrix[pkm[i].y][pkm[i].x];
+                        if (
+                            pkm[i].shiny && !App.game.party.alreadyCaughtPokemon(pkm[i].id, true) &&
+                            dist < dest.d && dist < pkm[i].steps
+                        ) {
+                            dest = pkm[i];
+                            dest.d = dist;
+                        }
                     }
                 }
                 if (dest.d == Infinity) {
