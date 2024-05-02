@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Farm Unlocks
 // @namespace    http://tampermonkey.net/
-// @version      0.6
+// @version      0.7
 // @description  Auto unlock berries in farm
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Farm%20Unlocks.user.js
@@ -88,11 +88,17 @@
     }
 
     function getNextLockedBerry() {
-        for(let i = 0; i < App.game.farming.unlockedBerries.length; i++) {
+        for(let berryName in unlockLayouts) {
+            let berryIndex = BerryType[berryName];
+            if(!App.game.farming.unlockedBerries[berryIndex]()) {
+                return berryIndex;
+            }
+        }
+/*         for(let i = 0; i < App.game.farming.unlockedBerries.length; i++) {
             if(!App.game.farming.unlockedBerries[i]()) {
                 return i;
             }
-        }
+        } */
         return null;
     }
 
@@ -206,7 +212,7 @@
 		'Iapapa': {
 			'Aspear': [2, 3, 5, 10, 12, 14, 19, 21, 22]
 		},
-		'Lum': {
+/* 		'Lum': {
 			'Cheri': [12],
 			'Leppa': [2, 22],
 			'Oran': [1, 21],
@@ -215,7 +221,7 @@
 			'Rawst': [8, 18],
 			'Pecha': [11],
 			'Chesto': [13]
-		},
+		}, */
 		'Pomeg': {
 			'Iapapa': [5, 8, 16, 19],
 			'Mago': [6, 9, 22]
