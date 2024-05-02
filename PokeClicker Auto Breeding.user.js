@@ -65,7 +65,7 @@
             document.getElementById(BUTTON_ID).style.backgroundColor = 'green';
             return;
         }
-        disableAutoAttack();
+        disableAuto();
     }
 
     function disableAuto() {
