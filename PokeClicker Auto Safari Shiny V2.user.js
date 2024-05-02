@@ -78,6 +78,12 @@
 	}
 
 	function doSafari() {
+        if(!Safari.inProgress()) {
+            disableAuto();
+            setTimeout(startSafari, 2000);
+            return;
+        }
+
         let bound = {x: Safari.grid[0].length, y: Safari.grid.length};
         let matrix = Array.from({length: bound.y}, () => Array.from({length: bound.x}, () => Infinity));
         let priority = 'up';
@@ -198,9 +204,6 @@
                     Safari.step(next[0].dir);
                 }
             }
-        } else {
-            toggleAuto();
-            setTimeout(startSafari, 2000);
         }
 	}
 
