@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Safari Level
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Auto Safari leveling up
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Safari%20Level.user.js
@@ -78,6 +78,12 @@
 	}
 
 	function doSafari() {
+        if(!Safari.inProgress()) {
+            disableAuto();
+            setTimeout(startSafari, 2000);
+            return;
+        }
+
         let bound = {x: Safari.grid[0].length, y: Safari.grid.length};
         let matrix = Array.from({length: bound.y}, () => Array.from({length: bound.x}, () => Infinity));
         let priority = 'up';
