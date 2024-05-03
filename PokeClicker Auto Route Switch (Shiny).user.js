@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Route Switch (Shiny)
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Auto route switch to get shinies faster
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Route%20Switch%20(Shiny).user.js
@@ -14,7 +14,7 @@
     'use strict';
 
 	var targetRoute = null;
-	var autoRouteSwitchTimeout = 100;
+	var autoRouteSwitchTimeout = 25;
     const BUTTON_ID = 'pcDoAutoRouteSwitch';
 
     function init() {
@@ -46,6 +46,9 @@
 
     function disableAutoRouteSwitch() {
         document.getElementById(BUTTON_ID).style.backgroundColor = '';
+        if(targetRoute !== null) {
+            MapHelper.moveToRoute(targetRoute, player.region);
+        }
 		targetRoute = null;
     }
 
