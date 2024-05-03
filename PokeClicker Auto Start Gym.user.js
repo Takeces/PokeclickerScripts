@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Start Gym
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Auto start gyms
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Start%20Gym.user.js
@@ -42,20 +42,17 @@
             return;
         }
 
-        let gyms = GameConstants.RegionGyms[player.region];
-        let townName = player.town().name;
-
-        // town doesn't have a gym
-        if(!gyms.includes(townName)) {
-            return;
-        }
-
-        // look through town content and start gym run
-        player.town().content.forEach(function(pcTownContent) {
-            if(pcTownContent instanceof Gym) {
-                GymRunner.startGym(pcTownContent);
-            }
-        });
+        var gyms = [];
+		for(let content of player.town().content) {
+			if(!(content instanceof Gym)) { continue; }
+			gyms.push(content);
+		}
+		for(const gym of gyms) {
+			if(App.game.statistics.gymsDefeated[GameConstants.getGymIndex(gym.town)]() >= 1000) { continue; }
+			gym.protectedOnclick();
+			return;
+		}
+		gyms[gyms.length - 1].protectedOnclick();
 	}
 
 	function autoStart() {
