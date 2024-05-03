@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Farm
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Auto farming
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Farm.user.js
