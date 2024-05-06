@@ -48,7 +48,9 @@
             pokes = dungeon.allAvailablePokemon();
         } else if(player.town().name === "Safari Zone" || player.town().name === "National Park") {
             for(const poke of SafariPokemonList.list[player.region]()) {
-                pokes.push(poke.name);
+                if(!poke.requireCaught) {
+                    pokes.push(poke.name);
+                }
             }
         }
 
