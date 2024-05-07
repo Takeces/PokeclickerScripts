@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.12
+// @version      0.13
 // @description  Show phasing info
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
@@ -261,6 +261,7 @@
             SafariBattle.load = function(enemy = SafariPokemon.random(Safari.activeEnvironment())) {
                 ogFunc.apply(this, [enemy]);
                 increasePhase();
+                resetPhaseToEdit();
                 if(SafariBattle.enemy.shiny) {
                     identifyPhaseToEditIndex();
                     var currentPhase = getCurrentPhase();
