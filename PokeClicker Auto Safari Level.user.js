@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Safari Level
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Auto Safari leveling up
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Safari%20Level.user.js
@@ -15,7 +15,11 @@
 
 	var autoEnabled = false;
 	var autoTimeout = 250;
+    var catchAllEnabled = false;
+    var catchShinyEnabled = false;
     const BUTTON_ID = 'pcDoAutoSafariLevel';
+    const BUTTON_CATCH_ALL_ID = 'pcDoAutoSafariLevelCatchAll';
+    const BUTTON_CATCH_SHINY_ID = 'pcDoAutoSafariLevelCatchShiny';
 
     function init() {
         let PcAutomationHolder = window.PcAutomationHolder;
@@ -28,8 +32,19 @@
         btn.setAttribute('id', BUTTON_ID);
         btn.innerHTML = 'Auto Safari Level';
         btn.addEventListener('click', toggleAuto);
-
         PcAutomationHolder.addAutomationButton(btn);
+
+        var btnCatchAll = document.createElement('button');
+        btnCatchAll.setAttribute('id', BUTTON_CATCH_ALL_ID);
+        btnCatchAll.innerHTML = 'Catch All';
+        btnCatchAll.addEventListener('click', toggleCatchAll);
+        PcAutomationHolder.addAutomationButton(btnCatchAll, true);
+
+        var btnCatchShiny = document.createElement('button');
+        btnCatchShiny.setAttribute('id', BUTTON_CATCH_SHINY_ID);
+        btnCatchShiny.innerHTML = 'Catch Shiny';
+        btnCatchShiny.addEventListener('click', toggleCatchShiny);
+        PcAutomationHolder.addAutomationButton(btnCatchShiny, true);
 
         setTimeout(checkGameLoadedAndRunning, 250);
     }
@@ -67,6 +82,26 @@
     function disableAuto() {
         document.getElementById(BUTTON_ID).style.backgroundColor = '';
 		autoEnabled = false;
+    }
+
+    function toggleCatchAll() {
+        if(catchAllEnabled) {
+            document.getElementById(BUTTON_CATCH_ALL_ID).style.backgroundColor = '';
+            catchAllEnabled = false;
+            return;
+        }
+        document.getElementById(BUTTON_CATCH_ALL_ID).style.backgroundColor = 'green';
+        catchAllEnabled = true;
+    }
+
+    function toggleCatchShiny() {
+        if(catchShinyEnabled) {
+            document.getElementById(BUTTON_CATCH_SHINY_ID).style.backgroundColor = '';
+            catchShinyEnabled = false;
+            return;
+        }
+        document.getElementById(BUTTON_CATCH_SHINY_ID).style.backgroundColor = 'green';
+        catchShinyEnabled = true;
     }
 
 	function doAuto() {
@@ -134,21 +169,30 @@
             }
         };
 
+        let bCatch = false;
         if (Safari.inProgress() && document.querySelector('#safariModal').classList.contains('show')) {
             if (Safari.inBattle()) {
                 if (!SafariBattle.busy()) {
-/*                     if (SafariBattle.enemy.shiny && !App.game.party.alreadyCaughtPokemon(SafariBattle.enemy.id, true)) { */
-                        if (SafariBattle.enemy.eating < 1 && App.game.farming.berryList[11]() > 25) {
+                    if(
+                        catchAllEnabled || // catch all
+                        (catchShinyEnabled && !App.game.party.alreadyCaughtPokemon(SafariBattle.enemy.id, true) && SafariBattle.enemy.shiny) || // shiny only
+                        (!App.game.party.alreadyCaughtPokemon(SafariBattle.enemy.id, false)) // don't have it yet
+                    ) {
+                        bCatch = true;
+                    }
+                    let catchChanceThreshold = 40;
+                    if(bCatch && (((SafariBattle.enemy.eating < 1 && SafariBattle.enemy.catchFactor >= catchChanceThreshold) || (SafariBattle.enemy.eating >= 1 && SafariBattle.enemy.catchFactor >= (catchChanceThreshold/2)))) || SafariBattle.enemy.shiny) {
+                        if (SafariBattle.enemy.eating < 1 && App.game.farming.berryList[11]() > 20) {
                             SafariBattle.throwBait(2);
                         } else if (Safari.balls() > 0) { //prevent balls to be negative and lock the safari
                             SafariBattle.throwBall();
                         }
-/*                     } else {
+                    } else {
                         SafariBattle.run();
                         setTimeout(() => {
                             SafariBattle.busy(false);
                         }, 1600); // anti soft lock
-                    } */
+                    }
                 }
             } else {
                 let dest = {d: Infinity};
@@ -169,6 +213,12 @@
                     const pkm = Safari.pokemonGrid();
                     for (let i = 0; i < pkm.length; i++) {
                         const dist = matrix[pkm[i].y][pkm[i].x];
+                        if(
+                            App.game.party.alreadyCaughtPokemon(pkm[i].id, false) &&
+                            !(catchShinyEnabled && !App.game.party.alreadyCaughtPokemon(pkm[i].id, true))
+                        ) {
+                            continue;
+                        }
                         if (
                             dist < dest.d && dist < pkm[i].steps
                         ) {
