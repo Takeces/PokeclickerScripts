@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Dungeon Runner
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  Automaticly run through a dungeon
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Dungeon%20Runner.user.js
@@ -16,6 +16,11 @@
     var autoAttackTimeout = 50;
     var autoAttackInterval = null;
     const BUTTON_ID = 'pcDoAutoDungeonRun';
+    const BUTTON_ID_BOSS_RUSH= 'pcDoAutoDungeonBossRush';
+    const BUTTON_ID_ALL_TILES= 'pcDoAutoDungeonAllTiles';
+
+	var bossRushEnabled = false;
+	var visitAllTiles = false;
 
     function init() {
         let PcAutomationHolder = window.PcAutomationHolder;
@@ -29,12 +34,26 @@
         btn.innerHTML = 'Auto Dungeon Run';
         btn.addEventListener('click', toggleAutoDungeon);
 
+        var btnBossRush = document.createElement('button');
+        btnBossRush.setAttribute('id', BUTTON_ID_BOSS_RUSH);
+        btnBossRush.innerHTML = 'Boss Rush';
+        btnBossRush.addEventListener('click', toggleBossRush);
+
+        var btnAllTiles = document.createElement('button');
+        btnAllTiles.setAttribute('id', BUTTON_ID_ALL_TILES);
+        btnAllTiles.innerHTML = 'All Tiles';
+        btnAllTiles.addEventListener('click', toggleAllTiles);
+
         PcAutomationHolder.addAutomationButton(btn);
+        PcAutomationHolder.addAutomationButton(btnBossRush, true);
+        PcAutomationHolder.addAutomationButton(btnAllTiles, true);
 
         if(!PcAutomationHolder.dungeonRunner) {
             PcAutomationHolder.dungeonRunner = {};
         }
         PcAutomationHolder.dungeonRunner.toggleAutoDungeon = toggleAutoDungeon;
+        PcAutomationHolder.dungeonRunner.toggleBossRush = toggleBossRush;
+        PcAutomationHolder.dungeonRunner.toggleAllTiles = toggleAllTiles;
     }
 
 	var autoDungeonEnabled = false;
@@ -56,6 +75,28 @@
 		autoDungeonEnabled = true;
         document.getElementById(BUTTON_ID).style.backgroundColor = 'green';
 		autoDungeon();
+	}
+
+	function toggleBossRush() {
+		if(bossRushEnabled) {
+			bossRushEnabled = false;
+            document.getElementById(BUTTON_ID_BOSS_RUSH).style.backgroundColor = '';
+			return;
+		}
+
+		bossRushEnabled = true;
+        document.getElementById(BUTTON_ID_BOSS_RUSH).style.backgroundColor = 'green';
+	}
+
+	function toggleAllTiles() {
+		if(visitAllTiles) {
+			visitAllTiles = false;
+            document.getElementById(BUTTON_ID_ALL_TILES).style.backgroundColor = '';
+			return;
+		}
+
+		visitAllTiles = true;
+        document.getElementById(BUTTON_ID_ALL_TILES).style.backgroundColor = 'green';
 	}
 
     function getPoint(x, y) {
@@ -157,7 +198,9 @@
 	function checkAndStartBoss() {
 		if(DungeonRunner.map.currentTile().type() === GameConstants.DungeonTile.boss) {
 			DungeonRunner.startBossFight();
+            return true;
 		}
+        return false;
 	}
 
 	function moveToAndStartBoss() {
@@ -180,9 +223,6 @@
 		}
 	}
 
-	var bossRushEnabled = false;
-	var visitAllTiles = true;
-
 	function doDungeon() {
 
 		// not in dungeon!
@@ -196,8 +236,10 @@
 		}
 
 		if(bossRushEnabled) {
-			checkAndStartBoss();
-			return;
+            moveToAndStartBoss();
+			if(checkAndStartBoss()) {
+                return;
+            }
 		}
 
 		// movement to do
