@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker SoftReset DungeonRunner
 // @namespace    pcInfoStuff
-// @version      0.3
+// @version      0.4
 // @description  Soft reset for running dungeons
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20DungeonRunner.user.js
@@ -61,6 +61,7 @@
         }
         PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon();
         PcAutomationHolder.dungeonRunner.toggleAutoDungeon();
+        PcAutomationHolder.dungeonRunner.toggleBossRush();
 
         var ogFuncs = {};
         (function() {
@@ -119,6 +120,9 @@
     }
 
     function doReload() {
+/*         window.addEventListener('unload', function () {
+            document.documentElement.innerHTML = '';
+        }); */
         location.reload();
     }
 
