@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Safari Level
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Auto Safari leveling up
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Safari%20Level.user.js
@@ -112,6 +112,12 @@
         setTimeout(doAuto, autoTimeout);
 	}
 
+    function haveCommonItem(arr1, arr2) {
+        const set1 = new Set(arr1);
+        const commonItems = arr2.filter(item => set1.has(item));
+        return commonItems.length > 0;
+    }
+
 	function doSafari() {
         if(!Safari.inProgress()) {
             disableAuto();
@@ -138,7 +144,9 @@
             0, //ground
             10, //grass
             11,12,13,14,21,22,23,24,15,16,17,18,19, //sand
+            1, 2, 3, 4, 5, 6, 7, 8, 9 //water
         ];
+        let waterTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
         let movementMatrix = (origin) => {
             let queue = new Set([JSON.stringify(origin)]);
@@ -162,7 +170,10 @@
                 } else {
                     matrix[y][x] = Math.min(...next.map(({x, y}) => matrix[y][x])) + 1;
 
-                    if (Safari.grid[y][x] == 10 && matrix[y][x] < nearestGrass.d && next.map(({x,y}) => Safari.grid[y][x]).includes(10)) {
+/*                     if (Safari.grid[y][x] == 10 && matrix[y][x] < nearestGrass.d && next.map(({x,y}) => Safari.grid[y][x]).includes(10)) {
+                        nearestGrass = {x, y, d: matrix[y][x]};
+                    } */
+                    if (waterTiles.includes(Safari.grid[y][x]) && matrix[y][x] < nearestGrass.d && haveCommonItem(next.map(({x,y}) => Safari.grid[y][x]), waterTiles)) {
                         nearestGrass = {x, y, d: matrix[y][x]};
                     }
                 }
@@ -182,9 +193,10 @@
                     }
                     let catchChanceThreshold = 40;
                     if(bCatch && (((SafariBattle.enemy.eating < 1 && SafariBattle.enemy.catchFactor >= catchChanceThreshold) || (SafariBattle.enemy.eating >= 1 && SafariBattle.enemy.catchFactor >= (catchChanceThreshold/2)))) || SafariBattle.enemy.shiny) {
-                        if (SafariBattle.enemy.eating < 1 && App.game.farming.berryList[11]() > 20) {
+/*                         if (SafariBattle.enemy.eating < 1 && App.game.farming.berryList[11]() > 20) {
                             SafariBattle.throwBait(2);
-                        } else if (Safari.balls() > 0) { //prevent balls to be negative and lock the safari
+                        } else  */
+                        if (Safari.balls() > 0) { //prevent balls to be negative and lock the safari
                             SafariBattle.throwBall();
                         }
                     } else {
