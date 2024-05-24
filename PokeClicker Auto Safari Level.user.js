@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Safari Level
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  Auto Safari leveling up
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Safari%20Level.user.js
@@ -142,9 +142,10 @@
         let nearestGrass = {x:0, y:0, d:Infinity};
         const walkable = [
             0, //ground
+            1, 2, 3, 4, 5, 6, 7, 8, 9, //water
             10, //grass
             11,12,13,14,21,22,23,24,15,16,17,18,19, //sand
-            1, 2, 3, 4, 5, 6, 7, 8, 9 //water
+            37, 38, 39 //tree tops
         ];
         let waterTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
