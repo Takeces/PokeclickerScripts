@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.13
+// @version      0.14
 // @description  Show phasing info
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
@@ -23,7 +23,7 @@
 
         let container = document.createElement('div');
         container.setAttribute('id', 'pcPhasingContainer');
-        container.setAttribute('style', 'position: fixed; bottom: 1em; right: 1em; padding-left: 0.5em; padding-right: 1em;');
+        container.setAttribute('style', 'position: fixed; bottom: 1em; right: 1em; padding-left: 0.5em; padding-right: 1em; z-index: 2;');
         container.setAttribute('class', 'card border-secondary');
 
         let header = document.createElement('div');
@@ -427,12 +427,12 @@
     function getLocationName() {
         // Route
         if(App.game.gameState === GameConstants.GameState.fighting) {
-            return Routes.getName(player.route(), player.region);
+            return Routes.getName(player.route, player.region);
         }
 
         // Dungeon
-		if(player.town() instanceof DungeonTown) {
-			return player.town().name;
+		if(player.town instanceof DungeonTown) {
+			return player.town.name;
 		}
     }
 
