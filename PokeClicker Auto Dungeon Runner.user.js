@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Dungeon Runner
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      0.6
 // @description  Automaticly run through a dungeon
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Dungeon%20Runner.user.js
@@ -168,7 +168,7 @@
 		for(let x = 0; x < xMax; x++) {
 			for(let y = 0; y < yMax; y++) {
 				let tile = getTile(x, y);
-				let hasLoot = tile.type() === GameConstants.DungeonTile.chest;
+				let hasLoot = tile.type() === GameConstants.DungeonTileType.chest;
 				if(hasLoot) { return true; }
 			}
 		}
@@ -184,7 +184,7 @@
 				let tile = getTile(x, y);
 				let visible = tile.isVisible;
 				let hasAccess = DungeonRunner.map.hasAccessToTile(getPoint(x, y));
-				let hasLoot = tile.type() === GameConstants.DungeonTile.chest;
+				let hasLoot = tile.type() === GameConstants.DungeonTileType.chest;
 				if(!hasLoot) { continue; }
 				if(!visible) { continue; }
 				if(!hasAccess) { continue; }
@@ -196,7 +196,7 @@
 	}
 
 	function checkAndStartBoss() {
-		if(DungeonRunner.map.currentTile().type() === GameConstants.DungeonTile.boss) {
+		if(DungeonRunner.map.currentTile().type() === GameConstants.DungeonTileType.boss) {
 			DungeonRunner.startBossFight();
             return true;
 		}
@@ -212,7 +212,7 @@
 				let tile = getTile(x, y);
 				let visible = tile.isVisible;
 				let hasAccess = DungeonRunner.map.hasAccessToTile(getPoint(x, y));
-				let isBoss = tile.type() === GameConstants.DungeonTile.boss;
+				let isBoss = tile.type() === GameConstants.DungeonTileType.boss;
 				if(!isBoss) { continue; }
 				if(!visible) { continue; }
 				if(!hasAccess) { continue; }
