@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Start Gym
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  Auto start gyms
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Start%20Gym.user.js
@@ -38,12 +38,12 @@
         }
 
         // player is on route and not in town
-        if(player.route() > 0) {
+        if(player.route > 0) {
             return;
         }
 
         var gyms = [];
-		for(let content of player.town().content) {
+		for(let content of player.town.content) {
 			if(!(content instanceof Gym)) { continue; }
 			gyms.push(content);
 		}
