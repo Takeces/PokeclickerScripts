@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Start Dungeon
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Auto start dungeons
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Start%20Dungeon.user.js
@@ -67,23 +67,23 @@
 		if(App.game.gameState !== GameConstants.GameState.town) { return; }
 
 		// town doesn't have dungeon
-		if(player.town().dungeon === undefined) { return; }
+		if(player.town.dungeon === undefined) { return; }
 
-        if(!App.game.wallet.hasAmount(new Amount(player.town().dungeon.tokenCost, GameConstants.Currency.dungeonToken))){
+        if(!App.game.wallet.hasAmount(new Amount(player.town.dungeon.tokenCost, GameConstants.Currency.dungeonToken))){
             return;
         }
 
-		if(autoStartUntilAllCaught && DungeonRunner.dungeonCompleted(player.town().dungeon, false)) {
+		if(autoStartUntilAllCaught && DungeonRunner.dungeonCompleted(player.town.dungeon, false)) {
 			return;
 		}
-		if(autoStartUntilAllCaughtShiny && DungeonRunner.dungeonCompleted(player.town().dungeon, true)) {
+		if(autoStartUntilAllCaughtShiny && DungeonRunner.dungeonCompleted(player.town.dungeon, true)) {
 			return;
 		}
-		if(autoStartUntilAchievementFull && DungeonRunner.isAchievementsComplete(player.town().dungeon)) {
+		if(autoStartUntilAchievementFull && DungeonRunner.isAchievementsComplete(player.town.dungeon)) {
 			return;
 		}
 
-		DungeonRunner.initializeDungeon(player.town().dungeon);
+		DungeonRunner.initializeDungeon(player.town.dungeon);
 	}
 
 	function autoStartDungeon() {
