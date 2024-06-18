@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker RouteInfo
 // @namespace    pcInfoStuff
-// @version      0.7
+// @version      0.8
 // @description  Show current route infos
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20RouteInfo.user.js
@@ -40,13 +40,13 @@
 
         let pokes = [];
 
-        let route = Routes.getRoute(player.region, player.route());
+        let route = Routes.getRoute(player.region, player.route);
         if(route !== undefined) {
-            pokes = RouteHelper.getAvailablePokemonList(player.route(), player.region);
-        } else if(player.town() instanceof DungeonTown) {
-            let dungeon = player.town().dungeon;
+            pokes = RouteHelper.getAvailablePokemonList(player.route, player.region);
+        } else if(player.town instanceof DungeonTown) {
+            let dungeon = player.town.dungeon;
             pokes = dungeon.allAvailablePokemon();
-        } else if(player.town().name === "Safari Zone" || player.town().name === "National Park") {
+        } else if(player.town.name === "Safari Zone" || player.town.name === "National Park") {
             for(const poke of SafariPokemonList.list[player.region]()) {
                 if(!poke.requireCaught) {
                     pokes.push(poke.name);
