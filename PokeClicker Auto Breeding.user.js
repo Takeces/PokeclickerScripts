@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Breeding
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Auto Breeding
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Breeding.user.js
@@ -13,7 +13,7 @@
 (function() {
     'use strict';
 
-    var timeout = 1000;
+    var timeout = 100;
     var interval = null;
     const BUTTON_ID = 'pcDoAutoBreeding';
 
@@ -30,6 +30,8 @@
         btn.addEventListener('click', toggleAuto);
 
         PcAutomationHolder.addAutomationButton(btn);
+
+        PcAutomationHolder.toggleAutoBreed = toggleAuto;
     }
 
     function doAuto() {
