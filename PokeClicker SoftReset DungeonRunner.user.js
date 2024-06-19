@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker SoftReset DungeonRunner
 // @namespace    pcInfoStuff
-// @version      0.4
+// @version      0.5
 // @description  Soft reset for running dungeons
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20DungeonRunner.user.js
@@ -55,7 +55,7 @@
             setTimeout(doSoftResetStuff, 250);
             return;
         }
-        if(DungeonRunner.dungeonCompleted(player.town().dungeon, true)) {
+        if(DungeonRunner.dungeonCompleted(player.town.dungeon, true)) {
             console.log('Dungeon is complete!');
             return;
         }
