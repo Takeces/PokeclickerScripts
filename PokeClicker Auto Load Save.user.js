@@ -44,37 +44,23 @@
             return;
         }
 
-/*         if(!PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon) {
-            setTimeout(doStuffAfterLoading, 250);
-            return;
-        }
-        PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon(); */
+/*         if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon)) { return; }
+        if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleAutoDungeon)) { return; }
+        if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleAllTiles)) { return; } */
+        //if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleBossRush)) { return; }
 
-/*         if(!PcAutomationHolder.dungeonRunner.toggleAutoDungeon) {
-            setTimeout(doStuffAfterLoading, 250);
-            return;
-        }
-        PcAutomationHolder.dungeonRunner.toggleAutoDungeon();
-        PcAutomationHolder.dungeonRunner.toggleAllTiles();
-        //PcAutomationHolder.dungeonRunner.toggleBossRush(); */
+        if(!activateAutomation(PcAutomationHolder.toggleAutoUnderground)) { return; }
+        if(!activateAutomation(PcAutomationHolder.toggleAutoBreed)) { return; }
+        if(!activateAutomation(PcAutomationHolder.toggleAutoFarm)) { return; }
+    }
 
-        if(!PcAutomationHolder.toggleAutoUnderground) {
+    function activateAutomation(fnAutomation) {
+        if(!fnAutomation) {
             setTimeout(doStuffAfterLoading, 250);
-            return;
+            return false;
         }
-        PcAutomationHolder.toggleAutoUnderground();
-
-        if(!PcAutomationHolder.toggleAutoBreed) {
-            setTimeout(doStuffAfterLoading, 250);
-            return;
-        }
-        PcAutomationHolder.toggleAutoBreed();
-
-        if(!PcAutomationHolder.toggleAutoFarm) {
-            setTimeout(doStuffAfterLoading, 250);
-            return;
-        }
-        PcAutomationHolder.toggleAutoFarm();
+        fnAutomation();
+        return true;
     }
 
 	/** Basic initialization call */
