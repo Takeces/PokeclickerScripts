@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Load Save
 // @namespace    pcInfoStuff
-// @version      0.3
+// @version      0.4
 // @description  open more windows
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
