@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker SoftReset Buy Shop Pokemon
 // @namespace    pcInfoStuff
-// @version      0.2
+// @version      0.3
 // @description  Soft reset for buying shop pokemon
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20Buy%20Shop%20Pokemon.user.js
@@ -55,8 +55,8 @@
     }
 
     function doTheThing() {
-        const shops = player.town().content.filter(c => c instanceof Shop);
-        if (player.route() || !shops.length) {
+        const shops = player.town.content.filter(c => c instanceof Shop);
+        if (player.route || !shops.length) {
             return;
         }
 
