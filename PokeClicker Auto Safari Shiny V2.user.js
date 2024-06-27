@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Safari Shiny V2
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Auto Safari shiny catching
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Safari%20Shiny%20V2.user.js
@@ -140,10 +140,24 @@
             }
         };
 
+        let safariFleeConfirmButton = undefined;
+        for(const modal of document.querySelectorAll('.modal-dialog')) {
+            if(!modal || modal == 0) continue;
+            const header = modal.querySelectorAll('.modal-header h5');
+            if(header.length == 0) continue;
+            if(header[0].textContent != 'Shiny Encounter') continue;
+            safariFleeConfirmButton = modal.querySelectorAll('.btn.btn-danger')[0];
+            break;
+        }
+        if(safariFleeConfirmButton) {
+            safariFleeConfirmButton.click();
+            return;
+        }
         if (Safari.inProgress() && document.querySelector('#safariModal').classList.contains('show')) {
             if (Safari.inBattle()) {
                 if (!SafariBattle.busy()) {
                     if (SafariBattle.enemy.shiny && !App.game.party.alreadyCaughtPokemon(SafariBattle.enemy.id, true)) {
+/*                     if (SafariBattle.enemy.shiny) { */
                         if (SafariBattle.enemy.eating < 1 && App.game.farming.berryList[11]() > 25) {
                             SafariBattle.throwBait(2);
                         } else if (Safari.balls() > 0) { //prevent balls to be negative and lock the safari
