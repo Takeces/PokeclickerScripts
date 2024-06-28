@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker RouteInfo
 // @namespace    pcInfoStuff
-// @version      0.8
+// @version      0.9
 // @description  Show current route infos
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20RouteInfo.user.js
@@ -12,8 +12,6 @@
 
 (function() {
     'use strict';
-
-
 
     function init() {
         initRouteInfo();
@@ -48,7 +46,7 @@
             pokes = dungeon.allAvailablePokemon();
         } else if(player.town.name === "Safari Zone" || player.town.name === "National Park") {
             for(const poke of SafariPokemonList.list[player.region]()) {
-                if(!poke.requireCaught) {
+                if(poke.isAvailable()) {
                     pokes.push(poke.name);
                 }
             }
