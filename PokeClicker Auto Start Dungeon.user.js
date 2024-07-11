@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Start Dungeon
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  Auto start dungeons
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Start%20Dungeon.user.js
@@ -55,6 +55,7 @@
             PcAutomationHolder.dungeonRunner = {};
         }
         PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon = toggleAutoStartDungeon;
+        PcAutomationHolder.dungeonRunner.toggleAutoStartDungeonToggleShiny = toggleShiny;
     }
 
     var autoStartDungeonEnabled = false;
