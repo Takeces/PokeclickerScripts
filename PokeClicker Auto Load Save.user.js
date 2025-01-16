@@ -5,8 +5,6 @@
 // @description  open more windows
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
-// @updateURL	 https://raw.githubusercontent.com/Takeces/PokeclickerScripts/main/PokeClicker%20Auto%20Load%20Save.user.js
-// @downloadURL	 https://raw.githubusercontent.com/Takeces/PokeclickerScripts/main/PokeClicker%20Auto%20Load%20Save.user.js
 // @grant        none
 // ==/UserScript==
 
