@@ -4,8 +4,6 @@
 // @version      0.4
 // @description  Auto Breeding
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Breeding.user.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Breeding.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
