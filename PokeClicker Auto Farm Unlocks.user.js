@@ -4,8 +4,6 @@
 // @version      0.7
 // @description  Auto unlock berries in farm
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Farm%20Unlocks.user.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Farm%20Unlocks.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
