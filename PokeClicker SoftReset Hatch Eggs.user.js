@@ -4,8 +4,6 @@
 // @version      0.1
 // @description  Soft reset for hatching eggs
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20Hatch%20Eggs.user.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20Hatch%20Eggs.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
