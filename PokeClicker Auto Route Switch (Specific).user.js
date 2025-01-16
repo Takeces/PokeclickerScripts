@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Route Switch (Specific)
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Auto route switch to get a specific pokemon faster
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Route%20Switch%20(Specific).user.js
@@ -15,7 +15,8 @@
 
 	var targetRoute = null;
 	var autoRouteSwitchTimeout = 25;
-    var specificPokemon = 'Mew';
+    var specificPokemon = 'Meowth (Phanpy)';
+    var specificPokemons = ['Let\'s Go Pikachu', 'Let\'s Go Eevee'];
     var shiny = false;
     const BUTTON_ID = 'pcDoAutoRouteSwitchSpecific';
 
@@ -37,7 +38,7 @@
 	function toggleAutoRouteSwitch() {
 		if(targetRoute === null) {
 			if(App.game.gameState !== GameConstants.GameState.fighting) { return; }
-			targetRoute = player.route();
+			targetRoute = player.route;
             document.getElementById(BUTTON_ID).style.backgroundColor = 'green';
 			doRouteSwitch();
 			return;
@@ -60,19 +61,30 @@
             return;
         }
 
-        // if desired pokemon is catched, check only every second if there's a change (level ups)
-        if(App.game.party.alreadyCaughtPokemonByName(specificPokemon, shiny)) {
+        let allCatched = true;
+        for(let i = 0; i < specificPokemons.length; i++) {
+            if(!App.game.party.alreadyCaughtPokemonByName(specificPokemons[i], shiny)) {
+                allCatched = false;
+            }
+        }
+        // if desired pokemon are catched, check only every second if there's a change (level ups)
+        if(allCatched) {
             setTimeout(doRouteSwitch, 1000);
             return;
         }
 
 		if(App.game.gameState === GameConstants.GameState.fighting) {
             // if not specific pokemon -> switch to town
-			if(Battle.enemyPokemon().name !== specificPokemon) {
+            if(!specificPokemons.includes(Battle.enemyPokemon().name)) {
 				MapHelper.moveToTown(GameConstants.StartingTowns[player.region]);
                 setTimeout(doRouteSwitch, autoRouteSwitchTimeout);
 				return;
-			}
+            }
+/* 			if(Battle.enemyPokemon().name !== specificPokemon) {
+				MapHelper.moveToTown(GameConstants.StartingTowns[player.region]);
+                setTimeout(doRouteSwitch, autoRouteSwitchTimeout);
+				return;
+			} */
             // if looking only for shiny and poke isn't -> switch to town
             if(shiny && !Battle.enemyPokemon().shiny) {
 				MapHelper.moveToTown(GameConstants.StartingTowns[player.region]);
