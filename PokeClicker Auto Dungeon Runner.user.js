@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Dungeon Runner
 // @namespace    http://tampermonkey.net/
-// @version      0.6
+// @version      0.7
 // @description  Automaticly run through a dungeon
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Dungeon%20Runner.user.js
@@ -147,8 +147,20 @@
         if(!visitAllTiles && App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(DungeonRunner.dungeon.name)]() >= 100) {
             xStart = 1;
             xIncrement = 2;
+
+            // first off, let the bottom tiles be visited
+            for(let x = xStart; x < xMax - 1; x++) {
+                let y = yMax - 1;
+                let visited = getTile(x, y).isVisited;
+                let hasAccess = DungeonRunner.map.hasAccessToTile(getPoint(x, y));
+                if(visited) { continue; }
+                if(!hasAccess) { continue; }
+                DungeonRunner.map.moveToCoordinates(x, y);
+                return;
+            }
         }
 
+        // visit the remaining structure as needed
 		for(let x = xStart; x < xMax; x = x + xIncrement) {
 			for(let y = 0; y < yMax; y++) {
 				let visited = getTile(x, y).isVisited;
@@ -203,7 +215,7 @@
         return false;
 	}
 
-	function moveToAndStartBoss() {
+	function moveToBoss() {
 		let board = DungeonRunner.map.board()[DungeonRunner.map.playerPosition().floor];
 		let xMax = board[0].length;
 		let yMax = board.length;
@@ -217,11 +229,53 @@
 				if(!visible) { continue; }
 				if(!hasAccess) { continue; }
 				DungeonRunner.map.moveToCoordinates(x, y);
-				DungeonRunner.startBossFight();
 				return;
 			}
 		}
 	}
+
+    function hasLadder() {
+		let board = DungeonRunner.map.board()[DungeonRunner.map.playerPosition().floor];
+		let xMax = board[0].length;
+		let yMax = board.length;
+		for(let x = 0; x < xMax; x++) {
+			for(let y = 0; y < yMax; y++) {
+				let tile = getTile(x, y);
+				let hasLadder = tile.type() === GameConstants.DungeonTileType.ladder;
+				if(hasLadder) { return true; }
+			}
+		}
+		return false;
+	}
+
+    function useLadder() {
+        let board = DungeonRunner.map.board()[DungeonRunner.map.playerPosition().floor];
+		let xMax = board[0].length;
+		let yMax = board.length;
+		for(let x = 0; x < xMax; x++) {
+			for(let y = 0; y < yMax; y++) {
+				let tile = getTile(x, y);
+				let visible = tile.isVisible;
+				let hasAccess = DungeonRunner.map.hasAccessToTile(getPoint(x, y));
+				let isLadder = tile.type() === GameConstants.DungeonTileType.ladder;
+				if(!isLadder) { continue; }
+				if(!visible) { continue; }
+				if(!hasAccess) { continue; }
+				DungeonRunner.map.moveToCoordinates(x, y);
+				DungeonRunner.nextFloor();
+				return true;
+			}
+		}
+        return false;
+    }
+
+    function checkAndUseLadder() {
+		if(DungeonRunner.map.currentTile().type() === GameConstants.DungeonTileType.ladder) {
+			DungeonRunner.nextFloor();
+            return true;
+		}
+        return false;
+    }
 
 	function doDungeon() {
 
@@ -236,7 +290,11 @@
 		}
 
 		if(bossRushEnabled) {
-            moveToAndStartBoss();
+			if(hasLadder()) {
+				if(useLadder())
+                    return;
+			}
+            moveToBoss();
 			if(checkAndStartBoss()) {
                 return;
             }
@@ -253,7 +311,12 @@
 			return;
 		}
 
-		moveToAndStartBoss();
+		if(hasLadder()) {
+			if(useLadder())
+                return;
+		}
+		moveToBoss();
+        checkAndStartBoss();
 	}
 
 	/** Basic initialization call */
