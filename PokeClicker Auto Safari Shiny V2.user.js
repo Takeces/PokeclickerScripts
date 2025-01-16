@@ -4,8 +4,6 @@
 // @version      0.4
 // @description  Auto Safari shiny catching
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Safari%20Shiny%20V2.user.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Safari%20Shiny%20V2.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
