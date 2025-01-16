@@ -4,8 +4,6 @@
 // @version      0.5
 // @description  Auto start gyms
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Start%20Gym.user.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Start%20Gym.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
