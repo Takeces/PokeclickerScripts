@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.14
+// @version      0.15
 // @description  Show phasing info
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
@@ -74,34 +74,23 @@
     function initBattleHooks() {
 
         (function() {
-            var ogFunc =  Battle.generateNewEnemy; // <-- Reference
+            var ogFunc = Battle.generateNewEnemy; // <-- Reference
             Battle.generateNewEnemy = function() {
                 ogFunc.apply(this);
                 increasePhase();
-            };
-        })();
-
-        (function() {
-            var ogFunc2 = Battle.defeatPokemon; // <-- Reference
-            Battle.defeatPokemon = function() {
-                const enemy = Battle.enemyPokemon();
+                const enemy = this.enemyPokemon();
                 resetPhaseToEdit();
                 if(enemy.shiny) {
                     identifyPhaseToEditIndex();
                     var currentPhase = getCurrentPhase();
                     addNewPhase();
+                    currentPhase.pokemon = enemy.name;
+                    currentPhase.location = getLocationName();
+                    currentPhase.encounterType = enemy.encounterType;
+                    currentPhase.numberOfShinies = countShinies();
+                    currentPhase.result = 'No Attempt';
+                    storeToLocalStorage();
                 }
-
-                ogFunc2.apply(this);
-
-                if(!enemy.shiny) { return; }
-
-                currentPhase.pokemon = enemy.name;
-                currentPhase.location = getLocationName();
-                currentPhase.encounterType = enemy.encounterType;
-                currentPhase.numberOfShinies = countShinies();
-                currentPhase.result = 'No Attempt';
-                storeToLocalStorage();
             };
         })();
 
@@ -139,30 +128,41 @@
             DungeonBattle.generateNewEnemy = function() {
                 ogFunc.apply(this);
                 increasePhase();
-            };
-        })();
-
-        (function() {
-            var ogFunc2 = DungeonBattle.defeatPokemon; // <-- Reference
-            DungeonBattle.defeatPokemon = function() {
                 const enemy = DungeonBattle.enemyPokemon();
                 resetPhaseToEdit();
                 if(enemy.shiny) {
                     identifyPhaseToEditIndex();
                     var currentPhase = getCurrentPhase();
                     addNewPhase();
+                    currentPhase.pokemon = enemy.name;
+                    currentPhase.location = getLocationName();
+                    currentPhase.encounterType = enemy.encounterType;
+                    currentPhase.numberOfShinies = countShinies();
+                    currentPhase.result = 'No Attempt';
+                    storeToLocalStorage();
                 }
+            };
+        })();
 
+        (function() {
+            var ogFunc2 = DungeonBattle.generateNewBoss; // <-- Reference
+            DungeonBattle.generateNewBoss = function() {
                 ogFunc2.apply(this);
-
-                if(!enemy.shiny) { return; }
-
-                currentPhase.pokemon = enemy.name;
-                currentPhase.location = getLocationName();
-                currentPhase.encounterType = enemy.encounterType;
-                currentPhase.numberOfShinies = countShinies();
-                currentPhase.result = 'No Attempt';
-                storeToLocalStorage();
+                increasePhase();
+                resetPhaseToEdit();
+                if(DungeonBattle.trainer() !== null) { return; }
+                const enemy = DungeonBattle.enemyPokemon();
+                if(enemy.shiny) {
+                    identifyPhaseToEditIndex();
+                    var currentPhase = getCurrentPhase();
+                    addNewPhase();
+                    currentPhase.pokemon = enemy.name;
+                    currentPhase.location = getLocationName();
+                    currentPhase.encounterType = enemy.encounterType;
+                    currentPhase.numberOfShinies = countShinies();
+                    currentPhase.result = 'No Attempt';
+                    storeToLocalStorage();
+                }
             };
         })();
 
@@ -200,30 +200,19 @@
             TemporaryBattleBattle.generateNewEnemy = function() {
                 ogFunc.apply(this);
                 increasePhase();
-            };
-        })();
-
-        (function() {
-            var ogFunc2 = TemporaryBattleBattle.defeatPokemon; // <-- Reference
-            TemporaryBattleBattle.defeatPokemon = function() {
                 const enemy = TemporaryBattleBattle.enemyPokemon();
                 resetPhaseToEdit();
                 if(enemy.shiny) {
                     identifyPhaseToEditIndex();
                     var currentPhase = getCurrentPhase();
                     addNewPhase();
+                    currentPhase.pokemon = enemy.name;
+                    currentPhase.location = TemporaryBattleBattle.battle.name;
+                    currentPhase.encounterType = enemy.encounterType;
+                    currentPhase.numberOfShinies = countShinies();
+                    currentPhase.result = 'No Attempt';
+                    storeToLocalStorage();
                 }
-
-                ogFunc2.apply(this);
-
-                if(!enemy.shiny) { return; }
-
-                currentPhase.pokemon = enemy.name;
-                currentPhase.location = TemporaryBattleBattle.battle.name;
-                currentPhase.encounterType = enemy.encounterType;
-                currentPhase.numberOfShinies = countShinies();
-                currentPhase.result = 'No Attempt';
-                storeToLocalStorage();
             };
         })();
 
@@ -396,6 +385,10 @@
 
     function increasePhase() {
 	    getFromLocalStorage();
+        let idx = phasing.length - 1;
+        if(idx < 0) {
+            addNewPhase();
+        }
         phasing[phasing.length - 1].count++;
         storeToLocalStorage();
     }
@@ -425,15 +418,16 @@
     }
 
     function getLocationName() {
-        // Route
-        if(App.game.gameState === GameConstants.GameState.fighting) {
-            return Routes.getName(player.route, player.region);
-        }
 
         // Dungeon
 		if(player.town instanceof DungeonTown) {
 			return player.town.name;
 		}
+
+        // Route
+        if(player.route > 0) {
+            return Routes.getName(player.route, player.region);
+        }
     }
 
     var flashInterval = null;
