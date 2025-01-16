@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Breeding
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.4
 // @description  Auto Breeding
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Breeding.user.js
@@ -45,7 +45,7 @@
             if(egg.type < 0) {
                 continue;
             };
-            if (egg.steps() < egg.totalSteps) {
+            if (egg.steps() < egg.stepsRequired) {
                 continue;
             }
             App.game.breeding.hatchPokemonEgg(i);
@@ -54,7 +54,8 @@
 
     function addEggs() {
         for(const pokemon of BreedingController.hatcherySortedFilteredList()) {
-            if(!App.game.breeding.hasFreeEggSlot()) { break; }
+            // if(!App.game.breeding.hasFreeEggSlot()) { break; }
+            if(!App.game.breeding.hasFreeQueueSlot()) { break; }
             if(pokemon.level < 100) { continue; }
             if(pokemon.breeding) { continue; }
             App.game.breeding.addPokemonToHatchery(pokemon);
