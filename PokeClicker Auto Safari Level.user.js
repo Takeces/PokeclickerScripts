@@ -4,8 +4,6 @@
 // @version      0.6
 // @description  Auto Safari leveling up
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Safari%20Level.user.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Safari%20Level.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
