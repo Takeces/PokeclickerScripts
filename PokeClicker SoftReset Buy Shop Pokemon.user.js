@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker SoftReset Buy Shop Pokemon
 // @namespace    pcInfoStuff
-// @version      0.3
+// @version      0.4
 // @description  Soft reset for buying shop pokemon
 // @author       Takeces
 // @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20Buy%20Shop%20Pokemon.user.js
@@ -76,6 +76,53 @@
                 if (App.game.wallet.hasAmount(new Amount(items[indexShop][indexItem].totalPrice(ShopHandler.amount()), items[indexShop][indexItem].currency))) {
                     ShopHandler.buyItem();
                     if(App.game.party.alreadyCaughtPokemonByName(items[indexShop][indexItem].name, true)) {
+                        saveGame();
+                        return;
+                    }
+
+                    // not been shiny -> reload
+                    doReload();
+                    return true;
+                }
+            }
+        }
+
+        for(let i = 0; i < shops.length; i++) {
+            if(!(shops[i] instanceof GenericTraderShop)) continue;
+            let deals = GenericDeal.list[shops[i].name]();
+            for(let j = 0; j < deals.length; j++) {
+                let profits = deals[j].profits;
+                for(let k = 0; k < profits.length; k++) {
+                    if(profits[k].item instanceof PokemonItem && !App.game.party.alreadyCaughtPokemonByName(profits[k].item.name, true)) {
+                        // buy item
+                        GenericDeal.use(shops[i].name, j, 1);
+
+                        if(App.game.party.alreadyCaughtPokemonByName(profits[k].item.name, true)) {
+                            saveGame();
+                            return;
+                        }
+
+                        // not been shiny -> reload
+                        doReload();
+                        return true;
+                    }
+                }
+            }
+        }
+
+        for(let i = 0; i < shops.length; i++) {
+            if(!(shops[i] instanceof BerryMasterShop)) continue;
+            let deals = BerryDeal.list[GameConstants.BerryTraderLocations[shops[i].parent.name]]();
+            for(let j = 0; j < deals.length; j++) {
+                if(deals[j].item.itemType instanceof PokemonItem && !App.game.party.alreadyCaughtPokemonByName(deals[j].item.itemType.name, true)) {
+                    // buy item
+                    if(BerryDeal.canUse(GameConstants.BerryTraderLocations[shops[i].parent.name], j)) {
+                       BerryDeal.use(GameConstants.BerryTraderLocations[shops[i].parent.name], j, 1);
+                    } else {
+                        return;
+                    }
+
+                    if(App.game.party.alreadyCaughtPokemonByName(deals[j].item.itemType.name, true)) {
                         saveGame();
                         return;
                     }
