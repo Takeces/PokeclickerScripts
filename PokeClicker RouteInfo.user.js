@@ -4,8 +4,6 @@
 // @version      0.9
 // @description  Show current route infos
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20RouteInfo.user.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20RouteInfo.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
