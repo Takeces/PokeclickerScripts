@@ -4,8 +4,6 @@
 // @version      0.6
 // @description  Auto start dungeons
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Start%20Dungeon.user.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Start%20Dungeon.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
