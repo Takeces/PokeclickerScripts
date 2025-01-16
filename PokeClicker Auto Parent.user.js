@@ -4,8 +4,6 @@
 // @version      0.4
 // @description  Parent with Container for all the auto stuff
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Parent.user.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Parent.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
