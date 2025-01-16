@@ -4,8 +4,6 @@
 // @version      0.3
 // @description  Auto farming
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Farm.user.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Auto%20Farm.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
