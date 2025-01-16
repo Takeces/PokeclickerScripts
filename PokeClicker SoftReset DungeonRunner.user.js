@@ -4,8 +4,6 @@
 // @version      0.5
 // @description  Soft reset for running dungeons
 // @author       Takeces
-// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20DungeonRunner.user.js
-// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20SoftReset%20DungeonRunner.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
