@@ -52,8 +52,8 @@
 
     function addEggs() {
         for(const pokemon of BreedingController.hatcherySortedFilteredList()) {
-            // if(!App.game.breeding.hasFreeEggSlot()) { break; }
-            if(!App.game.breeding.hasFreeQueueSlot()) { break; }
+            if(!App.game.breeding.hasFreeEggSlot()) { break; }
+/*             if(!App.game.breeding.hasFreeQueueSlot()) { break; } */
             if(pokemon.level < 100) { continue; }
             if(pokemon.breeding) { continue; }
             App.game.breeding.addPokemonToHatchery(pokemon);
