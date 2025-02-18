@@ -27,9 +27,25 @@
         btn.innerHTML = 'Auto Farm';
         btn.addEventListener('click', toggleAuto);
 
+        let ripeBtn = document.createElement('button');
+        ripeBtn.innerHTML = 'Ripe';
+        ripeBtn.classList.add('btn');
+        ripeBtn.classList.add('btn-success');
+        ripeBtn.addEventListener('click', ripeField);
+
+        let footer = document.getElementById('farmModal').querySelector('.modal-footer');
+        footer.insertBefore(ripeBtn, footer.firstChild);
+
         PcAutomationHolder.addAutomationButton(btn);
 
         PcAutomationHolder.toggleAutoFarm = toggleAuto;
+    }
+
+    function ripeField() {
+        for(const plot of App.game.farming.plotList) {
+            if(plot.isEmpty()) continue;
+            plot.age = plot.berryData.growthTime[3] + 1;
+        }
     }
 
 	function toggleAuto() {
