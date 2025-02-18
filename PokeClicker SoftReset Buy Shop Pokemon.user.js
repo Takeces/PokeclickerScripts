@@ -5,7 +5,8 @@
 // @description  Soft reset for buying shop pokemon
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
-// @grant        none
+// @grant        window.close
+// @grant        GM_openInTab
 // ==/UserScript==
 
 (function() {
@@ -142,7 +143,9 @@
     }
 
     function doReload() {
-        location.reload();
+/*         location.reload(); */
+        GM_openInTab(window.location.href, {active: false, insert: true});
+        window.setTimeout(window.close, 1);
     }
 
 	/** Basic initialization call */
