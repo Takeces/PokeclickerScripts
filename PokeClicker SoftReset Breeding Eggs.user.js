@@ -5,7 +5,8 @@
 // @description  Soft reset for breeding eggs
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
-// @grant        none
+// @grant        window.close
+// @grant        GM_openInTab
 // ==/UserScript==
 
 (function() {
@@ -114,7 +115,7 @@
                 continue;
             };
 
-            if (egg.steps() < egg.totalSteps) {
+            if (egg.steps() < egg.stepsRequired) {
                 saveGame();
                 continue;
             }
@@ -147,7 +148,9 @@
     }
 
     function doReload() {
-        location.reload();
+/*         location.reload(); */
+        GM_openInTab(window.location.href, {active: false, insert: true});
+        window.setTimeout(window.close, 1);
     }
 
 	/** Basic initialization call */
