@@ -63,7 +63,6 @@
                 pokeCaughtImg.setAttribute('style', 'width: 0.75em;');
                 pokeDiv.appendChild(pokeCaughtImg);
 
-
                 let pokeImg = document.createElement('img');
                 pokeImg.setAttribute('class', 'smallImage');
                 pokeImg.setAttribute('src', getPokeImage(pokes[i]));
