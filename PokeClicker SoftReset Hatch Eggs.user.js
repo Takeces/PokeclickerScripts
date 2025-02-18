@@ -5,7 +5,8 @@
 // @description  Soft reset for hatching eggs
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
-// @grant        none
+// @grant        window.close
+// @grant        GM_openInTab
 // ==/UserScript==
 
 (function() {
@@ -60,7 +61,7 @@
                 continue;
             };
 
-            if (egg.steps() < egg.totalSteps) {
+            if (egg.steps() < egg.stepsRequired) {
                 saveGame();
                 continue;
             }
@@ -80,7 +81,8 @@
             return;
         }
         // hatched pokemon was not shiny -> reload
-        doReload();
+        //doReload();
+        fakeReload();
         return true;
     }
 
@@ -94,6 +96,13 @@
 
     function doReload() {
         location.reload();
+    }
+
+    function fakeReload() {
+        GM_openInTab(window.location.href, {active: false, insert: true});
+        window.setTimeout(window.close, 1);
+        //let newTab = window.open(window.location.href, '_blank');
+        //window.setTimeout(function(){if(newTab) newTab.blur(); window.close();}, 1);
     }
 
 	/** Basic initialization call */
