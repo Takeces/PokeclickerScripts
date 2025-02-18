@@ -4,6 +4,8 @@
 // @version      0.15
 // @description  Show phasing info
 // @author       Takeces
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
@@ -394,6 +396,7 @@
     var phaseToEditIndex = null;
     var phaseToEdit = null;
     function identifyPhaseToEditIndex() {
+        phasing = phasing.slice(-30);
         phaseToEditIndex = phasing.length - 1;
         phaseToEdit = phasing[phaseToEditIndex];
     }
