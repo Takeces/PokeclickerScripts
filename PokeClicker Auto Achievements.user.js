@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Achievements
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Auto achievement walker
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -352,8 +352,9 @@
         const dungeons = GameConstants.RegionDungeons[player.region];
         for(let i = 0; i < dungeons.length; i++) {
             if(!dungeonList[dungeons[i]].isUnlocked()) { continue; }
-            if(RouteHelper.minPokerus(dungeonList[dungeons[i]].allAvailablePokemon()) < GameConstants.Pokerus.Resistant
-              && RouteHelper.minPokerus(dungeonList[dungeons[i]].allAvailablePokemon()) != GameConstants.Pokerus.Uninfected) {
+            for(const poke of dungeonList[dungeons[i]].normalEncounterList) {
+                if(poke.lock) continue;
+                if(poke.pkrsImage == 'assets/images/breeding/pokerus/Resistant.png') continue;
                 return dungeons[i];
             }
         }
