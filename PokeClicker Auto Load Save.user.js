@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Load Save
 // @namespace    pcInfoStuff
-// @version      0.5
+// @version      0.6
 // @description  open more windows
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -42,11 +42,12 @@
             return;
         }
 
-/*         if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon)) { return; } */
+        if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon)) { return; }
         if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleAutoDungeon)) { return; }
-/*         if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleAllTiles)) { return; } */
-        if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleBossRush)) { return; }
+        if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleAllTiles)) { return; }
+/*         if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleBossRush)) { return; } */
 /*         if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleAutoStartDungeonToggleShiny)) { return; } */
+        if(!activateAutomation(PcAutomationHolder.dungeonRunner.toggleAutoStartDungeonTogglePkrs)) { return; }
 
         if(!activateAutomation(PcAutomationHolder.toggleAutoUnderground)) { return; }
         if(!activateAutomation(PcAutomationHolder.toggleAutoBreed)) { return; }
