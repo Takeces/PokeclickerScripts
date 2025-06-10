@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Dungeon Runner
 // @namespace    http://tampermonkey.net/
-// @version      0.7
+// @version      0.8
 // @description  Automaticly run through a dungeon
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -52,6 +52,9 @@
         PcAutomationHolder.dungeonRunner.toggleAutoDungeon = toggleAutoDungeon;
         PcAutomationHolder.dungeonRunner.toggleBossRush = toggleBossRush;
         PcAutomationHolder.dungeonRunner.toggleAllTiles = toggleAllTiles;
+
+        PcAutomationHolder.dungeonRunner.enableBossRush = enableBossRush;
+        PcAutomationHolder.dungeonRunner.enableAllTiles = enableAllTiles;
     }
 
 	var autoDungeonEnabled = false;
@@ -77,25 +80,41 @@
 
 	function toggleBossRush() {
 		if(bossRushEnabled) {
-			bossRushEnabled = false;
-            document.getElementById(BUTTON_ID_BOSS_RUSH).style.backgroundColor = '';
+			disableBossRush();
 			return;
 		}
-
-		bossRushEnabled = true;
-        document.getElementById(BUTTON_ID_BOSS_RUSH).style.backgroundColor = 'green';
+        enableBossRush();
 	}
+
+    function enableBossRush() {
+        disableAllTiles();
+        bossRushEnabled = true;
+        document.getElementById(BUTTON_ID_BOSS_RUSH).style.backgroundColor = 'green';
+    }
+
+    function disableBossRush() {
+        bossRushEnabled = false;
+        document.getElementById(BUTTON_ID_BOSS_RUSH).style.backgroundColor = '';
+    }
 
 	function toggleAllTiles() {
 		if(visitAllTiles) {
-			visitAllTiles = false;
-            document.getElementById(BUTTON_ID_ALL_TILES).style.backgroundColor = '';
+			disableAllTiles();
 			return;
 		}
-
-		visitAllTiles = true;
-        document.getElementById(BUTTON_ID_ALL_TILES).style.backgroundColor = 'green';
+		enableAllTiles();
 	}
+
+    function enableAllTiles() {
+        disableBossRush();
+        visitAllTiles = true;
+        document.getElementById(BUTTON_ID_ALL_TILES).style.backgroundColor = 'green';
+    }
+
+    function disableAllTiles() {
+        visitAllTiles = false;
+        document.getElementById(BUTTON_ID_ALL_TILES).style.backgroundColor = '';
+    }
 
     function getPoint(x, y) {
 		return new Point(x, y, DungeonRunner.map.playerPosition().floor);
