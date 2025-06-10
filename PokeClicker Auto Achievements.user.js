@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Achievements
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  Auto achievement walker
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -356,12 +356,18 @@
                 if(poke.hide) continue;
                 if(poke.lock) continue;
                 if(!poke.pkrsImage || poke.pkrsImage == 'assets/images/breeding/pokerus/Resistant.png') continue;
+                if(PcAutomationHolder.dungeonRunner.toggleAutoStartDungeonTogglePkrs) {
+                    PcAutomationHolder.dungeonRunner.enableAllTiles();
+                }
                 return dungeons[i];
             }
             for(const poke of dungeonList[dungeons[i]].bossEncounterList) {
                 if(poke.hide) continue;
                 if(poke.lock) continue;
                 if(!poke.pkrsImage || poke.pkrsImage == 'assets/images/breeding/pokerus/Resistant.png') continue;
+                if(PcAutomationHolder.dungeonRunner.toggleAutoStartDungeonTogglePkrs) {
+                    PcAutomationHolder.dungeonRunner.enableBossRush();
+                }
                 return dungeons[i];
             }
         }
