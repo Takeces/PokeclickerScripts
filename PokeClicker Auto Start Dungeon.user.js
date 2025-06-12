@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Start Dungeon
 // @namespace    http://tampermonkey.net/
-// @version      0.6
+// @version      0.7
 // @description  Auto start dungeons
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -65,6 +65,7 @@
         }
         PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon = toggleAutoStartDungeon;
         PcAutomationHolder.dungeonRunner.toggleAutoStartDungeonToggleShiny = toggleShiny;
+        PcAutomationHolder.dungeonRunner.toggleAutoStartDungeonTogglePkrs = togglePkrs;
     }
 
     var autoStartDungeonEnabled = false;
