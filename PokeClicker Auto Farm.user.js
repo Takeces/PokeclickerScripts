@@ -89,14 +89,26 @@
         return result;
     }
 
+    function normalFarming() {
+		let selectedBerry = FarmController.selectedBerry();
+        for(const plot of App.game.farming.plotList) {
+            if(!plot.isUnlocked) { continue; }
+            if(plot.isEmpty()) {
+                App.game.farming.plant(plot.index, selectedBerry);
+                continue;
+            }
+/*             if(plot.age > plot.berryData.growthTime[3]) {
+                App.game.farming.harvest(plot.index);
+            } */
+        }
+        ripeField();
+    }
+
     function farmNeeded() {
         const neededBerry = getNextNeededBerry();
         ripeField();
         for(let i = 0; i < App.game.farming.plotList.length; i++) {
             const plot = App.game.farming.plotList[i];
-            if(plot.wanderer) {
-                App.game.farming.handleWanderer(plot);
-            }
             if(i < 5 || (i >= 10 && i < 15) || i >= 20) {
                 if(plot.isEmpty()) {
                     App.game.farming.plant(plot.index, BOOST_BERRY);
@@ -116,28 +128,34 @@
         }
     }
 
-	function doFarming() {
-		normalFarming();
-/*         farmNeeded(); */
-	}
+    function farmShinies() {
+        ripeField();
+        for(let i = 0; i < App.game.farming.plotList.length; i++) {
+            const plot = App.game.farming.plotList[i];
+            if(i == 6 || i == 8 || i == 16 || i == 18) {
+                if(plot.isEmpty()) {
+                    App.game.farming.plant(plot.index, BerryType.Lum);
+                }
+                continue;
+            }
+            if(plot.isEmpty()) {
+                App.game.farming.plant(plot.index, BerryType.Starf);
+                continue;
+            }
+        }
+    }
 
-    function normalFarming() {
-		let selectedBerry = FarmController.selectedBerry();
+	function doFarming() {
         for(const plot of App.game.farming.plotList) {
             if(!plot.isUnlocked) { continue; }
             if(plot.wanderer) {
                 App.game.farming.handleWanderer(plot);
             }
-            if(plot.isEmpty()) {
-                App.game.farming.plant(plot.index, selectedBerry);
-                continue;
-            }
-/*             if(plot.age > plot.berryData.growthTime[3]) {
-                App.game.farming.harvest(plot.index);
-            } */
         }
-        ripeField();
-    }
+/* 		normalFarming(); */
+        farmNeeded();
+/*         farmShinies(); */
+	}
 
 	/** Basic initialization call */
 
