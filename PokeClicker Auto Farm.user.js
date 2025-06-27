@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker Auto Farm
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Auto farming
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -12,7 +12,7 @@
     'use strict';
 
 	var autoEnabled = false;
-	var autoTimeout = 500;
+	var autoTimeout = 50;
     const BUTTON_ID = 'pcDoAutoFarm';
 
     function init() {
@@ -69,19 +69,75 @@
         setTimeout(doAuto, autoTimeout);
 	}
 
-	function doFarming() {
-		let selectedBerry = FarmController.selectedBerry();
-        for(const plot of App.game.farming.plotList) {
-            if(!plot.isUnlocked) { continue; }
+    const BERRIES = [
+        {berry: BerryType.Cheri, amount: 25},
+        {berry: BerryType.Iapapa, amount: 12},
+        {berry: BerryType.Cornn, amount: 6}
+    ];
+    const BOOST_BERRY = BerryType.Passho;
+
+    function getNextNeededBerry() {
+        let result = BERRIES[0].berry;
+        let smallest = Number.MAX_VALUE;
+        for(const data of BERRIES) {
+            const relative = App.game.farming.berryList[data.berry]() / data.amount;
+            if(relative < smallest) {
+                smallest = relative;
+                result = data.berry;
+            }
+        }
+        return result;
+    }
+
+    function farmNeeded() {
+        const neededBerry = getNextNeededBerry();
+        ripeField();
+        for(let i = 0; i < App.game.farming.plotList.length; i++) {
+            const plot = App.game.farming.plotList[i];
+            if(plot.wanderer) {
+                App.game.farming.handleWanderer(plot);
+            }
+            if(i < 5 || (i >= 10 && i < 15) || i >= 20) {
+                if(plot.isEmpty()) {
+                    App.game.farming.plant(plot.index, BOOST_BERRY);
+                }
+                continue;
+            }
             if(plot.isEmpty()) {
-                App.game.farming.plant(plot.index, selectedBerry);
+                App.game.farming.plant(plot.index, neededBerry);
                 continue;
             }
             if(plot.age > plot.berryData.growthTime[3]) {
                 App.game.farming.harvest(plot.index);
             }
+            if(plot.mulch == -1) {
+                App.game.farming.addMulch(plot.index, MulchType.Rich_Mulch, 1);
+            }
         }
+    }
+
+	function doFarming() {
+		normalFarming();
+/*         farmNeeded(); */
 	}
+
+    function normalFarming() {
+		let selectedBerry = FarmController.selectedBerry();
+        for(const plot of App.game.farming.plotList) {
+            if(!plot.isUnlocked) { continue; }
+            if(plot.wanderer) {
+                App.game.farming.handleWanderer(plot);
+            }
+            if(plot.isEmpty()) {
+                App.game.farming.plant(plot.index, selectedBerry);
+                continue;
+            }
+/*             if(plot.age > plot.berryData.growthTime[3]) {
+                App.game.farming.harvest(plot.index);
+            } */
+        }
+        ripeField();
+    }
 
 	/** Basic initialization call */
 
