@@ -12,7 +12,7 @@
     'use strict';
 
 	var autoEnabled = false;
-	var autoTimeout = 50;
+	var autoTimeout = 500;
     const BUTTON_ID = 'pcDoAutoFarm';
 
     function init() {
@@ -109,6 +109,7 @@
         ripeField();
         for(let i = 0; i < App.game.farming.plotList.length; i++) {
             const plot = App.game.farming.plotList[i];
+            if(!plot.isUnlocked) { continue; }
             if(i < 5 || (i >= 10 && i < 15) || i >= 20) {
                 if(plot.isEmpty()) {
                     App.game.farming.plant(plot.index, BOOST_BERRY);
@@ -132,15 +133,21 @@
         ripeField();
         for(let i = 0; i < App.game.farming.plotList.length; i++) {
             const plot = App.game.farming.plotList[i];
+            if(!plot.isUnlocked) { continue; }
             if(i == 6 || i == 8 || i == 16 || i == 18) {
                 if(plot.isEmpty()) {
                     App.game.farming.plant(plot.index, BerryType.Lum);
+                }
+                if(plot.berry != BerryType.Lum && plot.age > plot.berryData.growthTime[3]) {
+                    App.game.farming.harvest(plot.index);
                 }
                 continue;
             }
             if(plot.isEmpty()) {
                 App.game.farming.plant(plot.index, BerryType.Starf);
-                continue;
+            }
+            if(plot.berry != BerryType.Starf && plot.age > plot.berryData.growthTime[3]) {
+                App.game.farming.harvest(plot.index);
             }
         }
     }
@@ -153,8 +160,8 @@
             }
         }
 /* 		normalFarming(); */
-        farmNeeded();
-/*         farmShinies(); */
+/*         farmNeeded(); */
+        farmShinies();
 	}
 
 	/** Basic initialization call */
