@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PokeClicker RouteInfo
 // @namespace    pcInfoStuff
-// @version      0.9
+// @version      0.10
 // @description  Show current route infos
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
@@ -111,7 +111,7 @@
                 App.game.breeding.hatchList[3][player.region],
                 App.game.breeding.hatchList[4][player.region],
                 App.game.breeding.hatchList[5][player.region],
-                App.game.breeding.hatchList[7][player.region]
+                App.game.breeding.hatchList[6][player.region]
             );
         }
         let result = 0;
