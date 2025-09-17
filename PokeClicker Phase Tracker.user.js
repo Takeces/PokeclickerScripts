@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         PokeClicker Phase Tracker
 // @namespace    pcInfoStuff
-// @version      0.16
+// @version      0.17
 // @description  Show phasing info
 // @author       Takeces
+// @updateURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
+// @downloadURL	 https://github.com/Takeces/PokeclickerScripts/raw/main/PokeClicker%20Phase%20Tracker.user.js
 // @match        https://www.pokeclicker.com/*
 // @grant        none
 // ==/UserScript==
@@ -418,15 +420,15 @@
 
     function getLocationName() {
 
-        // Dungeon
-		if(player.town instanceof DungeonTown) {
-			return player.town.name;
-		}
-
         // Route
         if(player.route > 0) {
             return Routes.getName(player.route, player.region);
         }
+
+        // Dungeon
+		if(player.town instanceof DungeonTown) {
+			return player.town.name;
+		}
     }
 
     var flashInterval = null;
@@ -436,6 +438,7 @@
             return;
         }
         flashInterval = setInterval(flashBackground, flashTimeout);
+        window.PcAutomationHolder.dungeonRunner.disableAutoStartDungeon();
     }
 
     function stopFlashBackground() {
