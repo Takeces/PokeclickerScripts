@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         PokeClicker Auto Start Dungeon
 // @namespace    http://tampermonkey.net/
-// @version      0.7
+// @version      0.8
 // @description  Auto start dungeons
 // @author       Takeces
 // @match        https://www.pokeclicker.com/*
-// @grant        none
+// @grant        window.close
+// @grant        GM_openInTab
 // ==/UserScript==
 
 (function() {
@@ -19,7 +20,7 @@
     const BUTTON_PKRS_ID = 'pcDoAutoStartDungeonPkrs';
 
     function init() {
-        let PcAutomationHolder = window.PcAutomationHolder;
+        let PcAutomationHolder = unsafeWindow.PcAutomationHolder;
         if(PcAutomationHolder === undefined || PcAutomationHolder === null) {
             setTimeout(init, 50);
             return;
@@ -64,8 +65,10 @@
             PcAutomationHolder.dungeonRunner = {};
         }
         PcAutomationHolder.dungeonRunner.toggleAutoStartDungeon = toggleAutoStartDungeon;
+        PcAutomationHolder.dungeonRunner.disableAutoStartDungeon = disableAutoStartDungeon;
         PcAutomationHolder.dungeonRunner.toggleAutoStartDungeonToggleShiny = toggleShiny;
-        PcAutomationHolder.dungeonRunner.toggleAutoStartDungeonTogglePkrs = togglePkrs;
+        PcAutomationHolder.dungeonRunner.toggleAutoStartDungeonToggleAchievement = toggleAchievement;
+        PcAutomationHolder.dungeonRunner.toggleAutoStartDungeonTogglePkrs= togglePkrs;
     }
 
     var autoStartDungeonEnabled = false;
@@ -73,6 +76,12 @@
 	var autoStartUntilAllCaughtShiny = false;
 	var autoStartUntilAchievementFull = false;
 	var autoStartUntilResistant = false;
+
+    function doReload() {
+/*         location.reload(); */
+        GM_openInTab(window.location.href, {active: false, insert: true});
+        window.setTimeout(window.close, 1);
+    }
 
 	function startDungeon() {
 		// not in a "town"
@@ -82,6 +91,8 @@
 		if(player.town.dungeon === undefined) { return; }
 
         if(!App.game.wallet.hasAmount(new Amount(player.town.dungeon.tokenCost, GameConstants.Currency.dungeonToken))){
+            disableAutoStartDungeon();
+/*             doReload(); */
             return;
         }
 
@@ -114,14 +125,18 @@
 
 	function toggleAutoStartDungeon() {
 		if(autoStartDungeonEnabled) {
-			autoStartDungeonEnabled = false;
-            document.getElementById(BUTTON_ID).style.backgroundColor = '';
+            disableAutoStartDungeon();
 			return;
 		}
 		autoStartDungeonEnabled = true;
         document.getElementById(BUTTON_ID).style.backgroundColor = 'green';
 		autoStartDungeon();
 	}
+
+    function disableAutoStartDungeon() {
+        autoStartDungeonEnabled = false;
+        document.getElementById(BUTTON_ID).style.backgroundColor = '';
+    }
 
 	function toggleCaught() {
 		if(autoStartUntilAllCaught) {
