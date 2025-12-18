@@ -70,9 +70,8 @@
 	}
 
     const BERRIES = [
-        {berry: BerryType.Cheri, amount: 25},
-        {berry: BerryType.Iapapa, amount: 12},
-        {berry: BerryType.Cornn, amount: 6}
+        {berry: BerryType.Oran, amount: 35},
+        {berry: BerryType.Lum, amount: 10}
     ];
     const BOOST_BERRY = BerryType.Passho;
 
@@ -97,10 +96,14 @@
                 App.game.farming.plant(plot.index, selectedBerry);
                 continue;
             }
-/*             if(plot.age > plot.berryData.growthTime[3]) {
+            if(plot.age > plot.berryData.growthTime[3]) {
                 App.game.farming.harvest(plot.index);
-            } */
+            }
         }
+/*         ripeField(); */
+    }
+
+    function farmJustRipeIt() {
         ripeField();
     }
 
@@ -129,7 +132,7 @@
         }
     }
 
-    function farmShinies() {
+    function farmShiny() {
         ripeField();
         for(let i = 0; i < App.game.farming.plotList.length; i++) {
             const plot = App.game.farming.plotList[i];
@@ -152,6 +155,61 @@
         }
     }
 
+    function farmEV() {
+        ripeField();
+        for(let i = 0; i < App.game.farming.plotList.length; i++) {
+            const plot = App.game.farming.plotList[i];
+            if(!plot.isUnlocked) { continue; }
+            if(i == 6 || i == 8 || i == 16 || i == 18) {
+                if(plot.isEmpty()) {
+                    App.game.farming.plant(plot.index, BerryType.Lum);
+                }
+                if(plot.berry != BerryType.Lum && plot.age > plot.berryData.growthTime[3]) {
+                    App.game.farming.harvest(plot.index);
+                }
+                continue;
+            }
+            if(plot.isEmpty()) {
+                App.game.farming.plant(plot.index, BerryType.Rowap);
+            }
+            if(plot.berry != BerryType.Rowap && plot.age > plot.berryData.growthTime[3]) {
+                App.game.farming.harvest(plot.index);
+            }
+        }
+    }
+
+    function farmEggSteps() {
+        ripeField();
+        for(let i = 0; i < App.game.farming.plotList.length; i++) {
+            const plot = App.game.farming.plotList[i];
+            if(!plot.isUnlocked) { continue; }
+            if(i == 1 || i == 4 || i == 16 || i == 19) {
+                if(plot.isEmpty()) {
+                    App.game.farming.plant(plot.index, BerryType.Lum);
+                }
+                if(plot.berry != BerryType.Lum && plot.age > plot.berryData.growthTime[3]) {
+                    App.game.farming.harvest(plot.index);
+                }
+                continue;
+            }
+            if(i == 8 || i == 11 || i == 17) {
+                if(plot.isEmpty()) {
+                    App.game.farming.plant(plot.index, BerryType.Babiri);
+                }
+                if(plot.berry != BerryType.Babiri && plot.age > plot.berryData.growthTime[3]) {
+                    App.game.farming.harvest(plot.index);
+                }
+                continue;
+            }
+            if(plot.isEmpty()) {
+                App.game.farming.plant(plot.index, BerryType.Chople);
+            }
+            if(plot.berry != BerryType.Chople && plot.age > plot.berryData.growthTime[3]) {
+                App.game.farming.harvest(plot.index);
+            }
+        }
+    }
+
 	function doFarming() {
         for(const plot of App.game.farming.plotList) {
             if(!plot.isUnlocked) { continue; }
@@ -160,8 +218,11 @@
             }
         }
 /* 		normalFarming(); */
+/*         farmJustRipeIt(); */
 /*         farmNeeded(); */
-        farmShinies();
+/*         farmShiny(); */
+        farmEV();
+/*         farmEggSteps(); */
 	}
 
 	/** Basic initialization call */
